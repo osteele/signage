@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
-import { FirebaseRef } from './FirebaseClient';
 import TimerMixin from 'react-timer-mixin';
+import { FirebaseRef } from './FirebaseClient';
 
-export class SignageScreen extends Component {
+export class SignageScreen extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -53,24 +53,42 @@ export class SignageScreen extends Component {
     if (state.index == null || !state.config.screen) {
       return <div><h1>Loading…</h1></div>;
     }
+
     const config = state.config;
     if (state.index > state.playlist.sequence.length) {
-      return <div>invalid playlist index: {state.index}</div>;
+      return <div class="error">invalid playlist index: {state.index}</div>;
     }
-    const appIndex = state.playlist.sequence[state.index];
-    const app = state.apps[appIndex.app];
+
+    const frame = state.playlist.sequence[state.index];
+    const app = state.apps[frame.app];
     if (!app) {
-      return <div>invalid app index: {appIndex.app}</div>;
+      return <div class="error">invalid app index: {frame.app}</div>;
     }
+
     const height = config.screen.height || '800px';
-    const style = {position: "relative", height: height, width: "100%"};
-    return (
+    const width = config.screen.width || '100%';
+    const style = {position: 'relative', height, width};
+    return this.props.dummy ? (
+      <DummyApp app={app} style={style} />
+    ): (
       <iframe src={app.url} scrolling="no" frameBorder="0" style={style}>
         <p>Your browser does not support iframes.</p>
       </iframe>
     );
   }
 }
-
 reactMixin(SignageScreen.prototype, ReactFireMixin);
 reactMixin(SignageScreen.prototype, TimerMixin);
+
+// from http://stackoverflow.com/a/15710692/220667
+const hashCode = (str) =>
+  [].reduce.call(str, (p, c, i, a) => (p << 5) - p + a.charCodeAt(i), 0);
+
+function DummyApp({app, style}) {
+  const h = hashCode(app.url);
+  const r0 = (h >> 16) & 0xff, g0 = (h >> 8) & 0xff, b0 = h & 0xff;
+  const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2);
+  const background = `rgb(${r}, ${g}, ${b})`;
+  const style1 = {...style, ...{background}};
+  return <div className="dummy-iframe" style={style1}><tt>{app.url}</tt></div>;
+}

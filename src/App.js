@@ -11,11 +11,11 @@ import {
   // Link
 } from 'react-router-dom'
 
-const Manage = () => (
+const Manager = () => (
   <div className="App">
     <div className="App-header">
       <img src={logo} className="App-logo" alt="logo" />
-      <h2>Signage Manager</h2>
+      <h2>Digital Signage Manager</h2>
     </div>
     <p className="App-intro">
       Manager for Olin Library digital signage.
@@ -29,7 +29,8 @@ const App = () => (
   <Router>
     <div>
       <Route exact path="/" component={SignageScreen} />
-      <Route path="/manage" component={Manage} />
+      <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
+      <Route path="/manage" component={Manager} />
     </div>
   </Router>
 )
