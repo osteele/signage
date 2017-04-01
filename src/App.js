@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import { AppInfoList } from './AppInfo';
+import { Playlist } from './Playlist';
 import { SignageScreen } from './SignageScreen'
 import './App.css';
 
@@ -20,14 +21,9 @@ const Manage = () => (
       Manager for Olin Library digital signage.
     </p>
     <AppInfoList/>
+    <Playlist/>
   </div>
 )
-
-// const xSignageScreen = () => (
-//   <div>
-//     <h1>Home</h1>
-//   </div>
-// )
 
 const App = () => (
   <Router>

@@ -15,8 +15,8 @@ export class AppInfoList extends Component {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
   }
 
-  renderItem(user) {
-    return <li><a href="{user.url}" target="_"><code>{user.url}</code></a></li>
+  renderItem(app) {
+    return <li>{app.name}: <a href="{app.url}" target="_"><code>{app.url}</code></a></li>
   }
 
   render() {
