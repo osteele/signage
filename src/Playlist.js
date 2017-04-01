@@ -20,7 +20,7 @@ export default class Playlist extends React.Component {
 
   renderItem(frame) {
     const app = this.state.apps[frame.app];
-    return <li>{app.name}</li>;
+    return <li key={frame['.key']}>{app.name}</li>;
   }
 
   render() {

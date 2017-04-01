@@ -16,7 +16,7 @@ export default class AppInfoList extends React.Component {
   }
 
   renderItem(app) {
-    return <li>{app.name}: <a href="{app.url}" target="_"><code>{app.url}</code></a></li>
+    return <li key={app['.key']}>{app.name}: <a href="{app.url}" target="_"><code>{app.url}</code></a></li>
   }
 
   render() {
