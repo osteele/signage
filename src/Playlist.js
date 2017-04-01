@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
-import { FirebaseRef } from './FirebaseClient';
+import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {FirebaseRef} from './FirebaseClient';
 
 export default class Playlist extends React.Component {
   constructor(props, context) {
@@ -21,7 +22,6 @@ export default class Playlist extends React.Component {
   }
 
   createItem(data) {
-    console.info('create', data)
     this.firebaseSequenceRef.push(data);
   }
 
@@ -36,17 +36,39 @@ export default class Playlist extends React.Component {
     </li>);
   }
 
+  onSortEnd = ({oldIndex, newIndex}) => {
+    arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, index) =>
+      this.firebaseSequenceRef.child(item['.key']).setPriority(index)
+    );
+
+  };
+
   render() {
     return (
       <div>
         <h2>Playlist</h2>
-        <ol>{this.state.sequence.map(this.renderItem)}</ol>
-        <ol><CreateFrame apps={this.state.apps} create={this.createItem} /></ol>
+        <PlayListSequence apps={this.state.apps} items={this.state.sequence}
+          remove={this.removeItem.bind(this)} onSortEnd={this.onSortEnd} />
+        <CreateFrame apps={this.state.apps} create={this.createItem} />
       </div>
     );
   }
 }
 reactMixin(Playlist.prototype, ReactFireMixin);
+
+const PlayListItem = SortableElement(({item, app, remove}) => (
+  <li key={item['.key']}>
+    <FrameInfo frame={item} app={app} remove={() => remove(item)} />
+  </li>
+));
+
+const PlayListSequence = SortableContainer(({apps, items, remove}) => (<ul>
+  {items.map((item, index) => {
+    const app = apps[item.app];
+    return <PlayListItem item={item} key={item['.key']} index={index}
+      app={app} remove={remove} />;
+  })}
+</ul>));
 
 const FrameInfo = ({app, frame, remove}) => (
   <span>
@@ -59,7 +81,7 @@ const FrameInfo = ({app, frame, remove}) => (
 class CreateFrame extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { app: 0 };
+    this.state = {app: 0};
   }
 
   handleSubmit(event) {
