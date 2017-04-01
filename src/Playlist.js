@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 import {FirebaseRef} from './FirebaseClient';
 
 export default class Playlist extends React.Component {
@@ -48,7 +48,8 @@ export default class Playlist extends React.Component {
       <div>
         <h2>Playlist</h2>
         <PlayListSequence apps={this.state.apps} items={this.state.sequence}
-          remove={this.removeItem.bind(this)} onSortEnd={this.onSortEnd} />
+          remove={this.removeItem.bind(this)}
+          onSortEnd={this.onSortEnd} useDragHandle={true} axis={'y'} />
         <CreateFrame apps={this.state.apps} create={this.createItem} />
       </div>
     );
@@ -56,19 +57,23 @@ export default class Playlist extends React.Component {
 }
 reactMixin(Playlist.prototype, ReactFireMixin);
 
+const Handle = SortableHandle(() => <div className="handle" />);
+
 const PlayListItem = SortableElement(({item, app, remove}) => (
-  <li key={item['.key']}>
-    <FrameInfo frame={item} app={app} remove={() => remove(item)} />
-  </li>
+  <div key={item['.key']}>
+    <Handle /><FrameInfo frame={item} app={app} remove={() => remove(item)} />
+  </div>
 ));
 
-const PlayListSequence = SortableContainer(({apps, items, remove}) => (<ul>
-  {items.map((item, index) => {
-    const app = apps[item.app];
-    return <PlayListItem item={item} key={item['.key']} index={index}
-      app={app} remove={remove} />;
-  })}
-</ul>));
+const PlayListSequence = SortableContainer(({apps, items, remove}) => (
+  <div>
+    {items.map((item, index) => {
+      const app = apps[item.app];
+      return <PlayListItem item={item} key={item['.key']} index={index}
+        app={app} remove={remove} />;
+    })}
+  </div>
+));
 
 const FrameInfo = ({app, frame, remove}) => (
   <span>
