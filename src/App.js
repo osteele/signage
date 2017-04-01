@@ -20,13 +20,14 @@ const Manager = () => (
       those applications.
     </p>
     <p>
-      Preview the animation with placeholders at <Link to="/preview">{document.location.origin}/preview</Link>.
+      Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
     </p>
     <p>
-      Direct the digital signage to <Link to="/preview">{document.location.origin}/preview</Link>.
+      Open <Link to="/preview">{document.location.origin}/preview</Link> on the screen
+      that is displaying the digital signage.
     </p>
-    <AppInfoList />
     <Playlist />
+    <AppInfoList />
   </div>
 )
 
