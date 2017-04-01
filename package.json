@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^3.7.4",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-mixin": "^2.0.2",
+    "react-timer-mixin": "^0.13.3",
+    "reactfire": "^1.0.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
