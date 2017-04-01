@@ -15,12 +15,20 @@ export default class Playlist extends React.Component {
 
   componentDidMount() {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
-    this.bindAsArray(FirebaseRef.child('playlist').child('sequence'), 'sequence');
+    this.bindAsArray(FirebaseRef.child('playlist/sequence'), 'sequence');
+  }
+
+  removeItem(item) {
+    var firebaseRef = FirebaseRef.child('playlist/sequence');
+    console.info('remove', firebaseRef, item)
+    firebaseRef.child(item['.key']).remove();
   }
 
   renderItem(frame) {
     const app = this.state.apps[frame.app];
-    return <li key={frame['.key']}>{app.name}</li>;
+    return (<li key={frame['.key']}>
+      <AppInfo frame={frame} app={app} remove={() => this.removeItem(frame)} />
+    </li>);
   }
 
   render() {
@@ -34,5 +42,13 @@ export default class Playlist extends React.Component {
     );
   }
 }
+
+const AppInfo = ({app, frame, remove}) => (
+  <span>
+    {app.name}
+    {frame.duration && <span> ({frame.duration} seconds)</span>}
+    &nbsp;<i className="fa fa-trash-o" ariaHidden="true" onClick={remove}></i>
+  </span>
+)
 
 reactMixin(Playlist.prototype, ReactFireMixin);
