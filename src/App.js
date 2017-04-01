@@ -8,7 +8,7 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  // Link
+  Link
 } from 'react-router-dom'
 
 const Manager = () => (
@@ -18,7 +18,17 @@ const Manager = () => (
       <h2>Digital Signage Manager</h2>
     </div>
     <p className="App-intro">
-      Manager for Olin Library digital signage.
+      This application manages webapp-backed digital signage.
+    </p>
+    <p>
+      It manages a list of applications, and a playlist that sequences
+      those applications.
+    </p>
+    <p>
+      Preview the animation with placeholders at <Link to="/preview">{document.location.origin}/preview</Link>.
+    </p>
+    <p>
+      Direct the digital signage to <Link to="/preview">{document.location.origin}/preview</Link>.
     </p>
     <AppInfoList />
     <Playlist />
@@ -30,7 +40,7 @@ const App = () => (
     <div>
       <Route exact path="/" component={SignageScreen} />
       <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
-      <Route path="/manage" component={Manager} />
+      <Route exact path="/manage" component={Manager} />
     </div>
   </Router>
 )

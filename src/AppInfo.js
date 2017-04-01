@@ -22,7 +22,7 @@ export class AppInfoList extends React.Component {
   render() {
     return (
       <div>
-        <h2>Screens</h2>
+        <h2>Applications</h2>
         <ul>
           {this.state.apps.map(this.renderItem)}
         </ul>
