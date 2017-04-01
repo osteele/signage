@@ -69,7 +69,7 @@ export class SignageScreen extends React.Component {
     const width = config.screen.width || '100%';
     const style = {position: 'relative', height, width};
     return this.props.dummy ? (
-      <DummyApp app={app} style={style} />
+      <DummyApp app={app} frame={frame} style={style} />
     ): (
       <iframe src={app.url} scrolling="no" frameBorder="0" style={style}>
         <p>Your browser does not support iframes.</p>
@@ -84,11 +84,17 @@ reactMixin(SignageScreen.prototype, TimerMixin);
 const hashCode = (str) =>
   [].reduce.call(str, (p, c, i, a) => (p << 5) - p + a.charCodeAt(i), 0);
 
-function DummyApp({app, style}) {
+function DummyApp({app, frame, style}) {
   const h = hashCode(app.url);
   const r0 = (h >> 16) & 0xff, g0 = (h >> 8) & 0xff, b0 = h & 0xff;
   const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2);
   const background = `rgb(${r}, ${g}, ${b})`;
   const style1 = {...style, ...{background}};
-  return <div className="dummy-iframe" style={style1}><tt>{app.url}</tt></div>;
+  return (<div style={style1}>
+    <div>
+      {app.name}
+      {frame.duration && <small> ({frame.duration} seconds)</small>}
+    </div>
+    <div><tt>{app.url}</tt></div>
+  </div>);
 }
