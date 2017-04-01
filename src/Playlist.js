@@ -18,8 +18,8 @@ export class Playlist extends Component {
   }
 
   renderItem(frame) {
-    const app = this.state.apps[frame.app]
-    return <li>{app.name}</li>
+    const app = this.state.apps[frame.app];
+    return <li>{app.name}</li>;
   }
 
   render() {
@@ -30,7 +30,7 @@ export class Playlist extends Component {
           {this.state.sequence.map(this.renderItem.bind(this))}
         </ol>
       </div>
-    )
+    );
   }
 }
 

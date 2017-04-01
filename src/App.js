@@ -20,16 +20,16 @@ const Manage = () => (
     <p className="App-intro">
       Manager for Olin Library digital signage.
     </p>
-    <AppInfoList/>
-    <Playlist/>
+    <AppInfoList />
+    <Playlist />
   </div>
 )
 
 const App = () => (
   <Router>
     <div>
-      <Route exact path="/" component={SignageScreen}/>
-      <Route path="/manage" component={Manage}/>
+      <Route exact path="/" component={SignageScreen} />
+      <Route path="/manage" component={Manage} />
     </div>
   </Router>
 )

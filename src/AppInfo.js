@@ -8,7 +8,7 @@ export class AppInfoList extends Component {
     super(props, context)
     this.state = {
       apps: []
-    }
+    };
   }
 
   componentDidMount() {
