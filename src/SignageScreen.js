@@ -6,14 +6,14 @@ import TimerMixin from 'react-timer-mixin';
 
 export class SignageScreen extends Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       apps: [],
       config: {},
       playlist: {},
       index: null,
     };
-    this.nextFrame = null;
+    this.endFrameTime = 0;
   }
 
   componentDidMount() {
@@ -34,16 +34,16 @@ export class SignageScreen extends Component {
     const frame = state.playlist.sequence[state.index];
     if (frame) {
       const duration = frame.duration || state.playlist.duration || 60;
-      this.nextFrame = new Date().getTime() + duration * 1000;
+      this.endFrameTime = new Date().getTime() + duration * 1000;
     }
   }
 
   tick() {
     const state = this.state;
     if (!state.apps.length || !state.playlist.sequence) return;
-    if ((new Date()).getTime() >= this.nextFrame) {
+    if ((new Date()).getTime() >= this.endFrameTime) {
       const index = (1 + state.index) % state.playlist.sequence.length;
-      this.setState({index: index});
+      this.setState({index});
       this.setupFrame();
     }
   }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import { FirebaseRef } from './FirebaseClient';
 
-export class AppInfoList extends Component {
+export class AppInfoList extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       apps: []
     };

@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import { FirebaseRef } from './FirebaseClient';
 
-export class Playlist extends Component {
+export class Playlist extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
+    this.renderItem = this.renderItem.bind(this);
     this.state = {
       apps: [],
       sequence: [],
@@ -27,7 +28,7 @@ export class Playlist extends Component {
       <div>
         <h2>Playlist</h2>
         <ol>
-          {this.state.sequence.map(this.renderItem.bind(this))}
+          {this.state.sequence.map(this.renderItem)}
         </ol>
       </div>
     );
