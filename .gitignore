@@ -10,4 +10,5 @@ npm-debug.log
 .idea
 *.log
 
-src/firebase-config.js
+# Secrets
+src/firebase.json

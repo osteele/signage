@@ -1,5 +1,5 @@
 import Firebase from 'firebase';
-import { FirebaseConfig } from './firebase-config';
+import FirebaseConfig from './firebase.json';
 
 Firebase.initializeApp(FirebaseConfig);
 Firebase.auth();
