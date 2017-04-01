@@ -10,5 +10,6 @@ npm-debug.log
 .idea
 *.log
 
-# Secrets
+# Deployment configuration
+.firebaserc
 src/firebase.json

@@ -13,3 +13,15 @@ A web application to (1) manage a playlist for digital signage, and (2) drive a 
 ## Develop
 
 `npm start` or `yarn start`
+
+## Configure Deployment
+
+[These instructions deploy as a static single-page application on Firebase.]
+
+1. `npm install -g firebase-tools` or `yarn global add firebase-tools`.
+
+2. `firebase init`. Don't overwrite existing files.
+
+## Deploy
+
+`firebase deploy`
