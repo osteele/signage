@@ -1,15 +1,10 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import logo from './logo.svg';
-import { AppInfoList } from './AppInfo';
-import { Playlist } from './Playlist';
-import { SignageScreen } from './SignageScreen'
+import AppInfoList from './AppInfo';
+import Playlist from './Playlist';
+import SignageScreen from './SignageScreen'
 import './App.css';
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
 
 const Manager = () => (
   <div className="App">

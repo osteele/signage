@@ -3,7 +3,7 @@ import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import { FirebaseRef } from './FirebaseClient';
 
-export class Playlist extends React.Component {
+export default class Playlist extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.renderItem = this.renderItem.bind(this);
