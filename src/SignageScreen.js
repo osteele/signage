@@ -60,6 +60,9 @@ export default class SignageScreen extends React.Component {
     }
 
     const frame = state.playlist.sequence[state.index];
+    if (!frame) {
+      return <div class="error">invalid state index: {state.index}</div>;
+    }
     const app = state.apps[frame.app];
     if (!app) {
       return <div class="error">invalid app index: {frame.app}</div>;
