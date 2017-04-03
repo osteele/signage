@@ -24,4 +24,6 @@ A web application to (1) manage a playlist for digital signage, and (2) drive a 
 
 ## Deploy
 
-`firebase deploy`
+``` bash
+npm run build && firebase deploy
+```
