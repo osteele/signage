@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import logo from './logo.svg';
 import { login, logout, onAuthStateChanged } from './auth'
 import AppInfoList from './AppInfo';
 import Playlist from './Playlist';
@@ -8,32 +8,58 @@ import SignageScreen from './SignageScreen'
 import './App.css';
 
 const Manager = () => (
-  <div className="App">
-    <div className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h2>Digital Signage Manager</h2>
-    </div>
-    <p className="App-intro">
-      This application manages webapp-backed digital signage.
-    </p>
-    <p>
-      It manages a list of applications, and a playlist that sequences
-      those applications.
-    </p>
-    <p>
-      Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
-    </p>
-    <p>
-      Open <Link to="/view">{document.location.origin}/view</Link> on the screen
-      that is displaying the digital signage.
-    </p>
-    <LoginButton />
-    <Playlist />
-    <AppInfoList />
+  <div>
+    <Navbar>
+      <Grid>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/">Digital Signage Manager</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <LoginButton />
+        </Navbar.Header>
+      </Grid>
+    </Navbar>
+
+    <Jumbotron>
+      <p>Sign in to edit the playlist.</p>
+      <p>
+        Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
+      </p>
+      <p>
+        Open <Link to="/view">{document.location.origin}/view</Link> on the screen
+        that is displaying the digital signage.
+      </p>
+    </Jumbotron>
+
+    <Grid>
+      <Row>
+        <Col xs={6}>
+          <h2>Playlist</h2>
+          <Playlist />
+        </Col>
+        <Col xs={6}>
+          <h2>Applications</h2>
+          <AppInfoList />
+        </Col>
+      </Row>
+    </Grid>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          This application manages digital signage.
+        </p>
+        <p>
+          It manages a list of applications, and a playlist that sequences
+          those applications.
+        </p>
+      </div>
+    </footer>
   </div>
 )
 
-class LoginButton extends React.Component {
+class LoginButton extends Component {
   state = { user_uid: 0 };
 
   constructor(props, context) {
@@ -49,8 +75,8 @@ class LoginButton extends React.Component {
 
   render() {
     return this.isLoggedIn()
-      ? <button onClick={logout}>Sign out</button>
-      : <button onClick={login}>Sign in</button>;
+      ? <Button onClick={logout}>Sign out</Button>
+      : <Button onClick={login}>Sign in</Button>;
   }
 }
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
-import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
-import {FirebaseRef} from './FirebaseClient';
+import { ListGroupItem } from 'react-bootstrap';
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
+import { FirebaseRef } from './FirebaseClient';
 
-export default class Playlist extends React.Component {
+export default class Playlist extends Component {
   constructor(props, context) {
     super(props, context);
     this.firebaseSequenceRef = FirebaseRef.child('playlist/sequence');
@@ -46,11 +47,12 @@ export default class Playlist extends React.Component {
   render() {
     return (
       <div>
-        <h2>Playlist</h2>
         <PlayListSequence apps={this.state.apps} items={this.state.sequence}
           remove={this.removeItem.bind(this)}
           onSortEnd={this.onSortEnd} useDragHandle={true} axis={'y'} />
-        <CreateFrame apps={this.state.apps} create={this.createItem} />
+        <ListGroupItem>
+          <CreateFrame apps={this.state.apps} create={this.createItem} />
+        </ListGroupItem>
       </div>
     );
   }
@@ -60,18 +62,17 @@ reactMixin(Playlist.prototype, ReactFireMixin);
 const Handle = SortableHandle(() => <div className="handle" />);
 
 const PlayListItem = SortableElement(({item, app, remove}) => (
-  <div key={item['.key']}>
-    <Handle /><FrameInfo frame={item} app={app} remove={() => remove(item)} />
-  </div>
+  <ListGroupItem key={item['.key']}>
+    <Handle />
+    <FrameInfo frame={item} app={app} remove={() => remove(item)} />
+  </ListGroupItem>
 ));
 
 const PlayListSequence = SortableContainer(({apps, items, remove}) => (
   <div>
-    {items.map((item, index) => {
-      const app = apps[item.app];
-      return <PlayListItem item={item} key={item['.key']} index={index}
-        app={app} remove={remove} />;
-    })}
+    {items.map((item, index) =>
+      <PlayListItem item={item} key={item['.key']} index={index}
+        app={apps[item.app]} remove={remove} />)}
   </div>
 ));
 
@@ -79,11 +80,11 @@ const FrameInfo = ({app, frame, remove}) => (
   <span>
     {app.name}
     {frame.duration && <span> ({frame.duration} seconds)</span>}
-    &nbsp;<i className="fa fa-trash-o" aria-hidden="true" style={{cursor: 'pointer'}} onClick={remove}></i>
+    &nbsp;<i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}} onClick={remove}></i>
   </span>
 )
 
-class CreateFrame extends React.Component {
+class CreateFrame extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {app: 0};
@@ -99,7 +100,7 @@ class CreateFrame extends React.Component {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <label>
-          Application:
+          Add:
           <select defaultValue={this.props.apps[0]['.key']}
               onChange={(e) => this.setState({app: e.target.value})}>
             {this.props.apps.map((app) =>
