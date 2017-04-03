@@ -1,71 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
 import { FirebaseRef } from './firebase';
 
-export default class SignageScreen extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      apps: [],
-      config: {},
-      playlist: {},
-      index: null,
-    };
-    this.endFrameTime = 0;
-  }
+export default class SignageScreen extends Component {
+  state = {
+    apps: [],
+    config: {},
+    playlist: {},
+    sequence: [],
+    index: null,
+  };
+
+  endFrameTime = 0;
 
   componentDidMount() {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
-    this.bindAsObject(FirebaseRef.child('playlist'), 'playlist');
     this.bindAsObject(FirebaseRef.child('config'), 'config');
+    this.bindAsObject(FirebaseRef.child('playlist'), 'playlist');
+    this.bindAsArray(FirebaseRef.child('playlist/sequence'), 'sequence');
     this.setInterval(this.tick, 1000);
   }
 
-  setupFrame() {
-    const state = this.state
-    if (!state.apps.length || !state.playlist.sequence.length) return;
-    if (state.index > state.playlist.sequence.length) {
-      this.setState({index: 0})
-    }
-
-    this.setState({index: state.index});
-    const frame = state.playlist.sequence[state.index];
+  _setupFrame(frame) {
     if (frame) {
-      const duration = frame.duration || state.playlist.duration || 60;
+      const duration = frame.duration || this.state.playlist.duration || 60;
       this.endFrameTime = new Date().getTime() + duration * 1000;
     }
   }
 
-  tick() {
+  tick = () => {
     const state = this.state;
-    if (!state.apps.length || !state.playlist.sequence) return;
+    const { apps, sequence } = state;
+    if (!apps.length || !sequence.length) return;
     if ((new Date()).getTime() >= this.endFrameTime) {
-      const index = (1 + state.index) % state.playlist.sequence.length;
+      const index = (1 + (state.index || 0)) % sequence.length;
       this.setState({index});
-      this.setupFrame();
+      this._setupFrame(sequence[index]);
     }
   }
 
   render() {
-    const state = this.state
+    const state = this.state;
+    const { config, sequence } = state;
+
     if (state.index == null || !state.config.screen) {
-      return <div><h1>Loading…</h1></div>;
+      return <h1>Loading…</h1>;
     }
 
-    const config = state.config;
-    if (state.index > state.playlist.sequence.length) {
-      return <div class="error">invalid playlist index: {state.index}</div>;
+    if (state.index > sequence.length) {
+      return <div className="alert alert-danger">invalid playlist index: {state.index}</div>;
     }
 
-    const frame = state.playlist.sequence[state.index];
+    const frame = sequence[state.index];
     if (!frame) {
-      return <div class="error">invalid state index: {state.index}</div>;
+      return <div className="alert alert-danger">invalid state index: {state.index}</div>;
     }
+
     const app = state.apps[frame.app];
     if (!app) {
-      return <div class="error">invalid app index: {frame.app}</div>;
+      return <div className="alert alert-danger">invalid app index: {frame.app}</div>;
     }
 
     const height = config.screen.height || '800px';
@@ -93,11 +88,11 @@ function AppPagePlaceholder({app, frame, style}) {
   const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2);
   const background = `rgb(${r}, ${g}, ${b})`;
   const style1 = {...style, ...{background}};
-  return (<div className="app-placeholder" style={style1}>
-    <div>
+  return (<div className="app-placeholder alert" style={style1}>
+    <h1>
       {app.name}
       {frame.duration && <small> ({frame.duration} seconds)</small>}
-    </div>
+    </h1>
     <div><tt>{app.url}</tt></div>
   </div>);
 }
