@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import logo from './logo.svg';
-import {login, logout, isLoggedIn, onAuthStateChanged} from './auth'
+import { login, logout, onAuthStateChanged } from './auth'
 import AppInfoList from './AppInfo';
 import Playlist from './Playlist';
 import SignageScreen from './SignageScreen'
@@ -24,7 +24,7 @@ const Manager = () => (
       Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
     </p>
     <p>
-      Open <Link to="/preview">{document.location.origin}/preview</Link> on the screen
+      Open <Link to="/view">{document.location.origin}/view</Link> on the screen
       that is displaying the digital signage.
     </p>
     <LoginButton />
@@ -57,9 +57,9 @@ class LoginButton extends React.Component {
 const App = () => (
   <Router>
     <div>
-      <Route exact path="/" component={SignageScreen} />
+      <Route exact path="/" component={Manager} />
+      <Route exact path="/view" component={SignageScreen} />
       <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
-      <Route exact path="/manage" component={Manager} />
     </div>
   </Router>
 )

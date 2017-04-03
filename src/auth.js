@@ -1,28 +1,23 @@
-import { FirebaseRef, firebaseAuth } from './FirebaseClient';
+import { firebaseAuth } from './FirebaseClient'
 
-export function auth(email, pw) {
-  return firebaseAuth().createUserWithEmailAndPassword(email, pw)
-    .then(saveUser);
+export const login = () => {
+  console.info('about to log in')
+  const provider = new firebaseAuth.GithubAuthProvider();
+  provider.addScope('repo');
+  // TODO on mobile, sign in without redirect
+  firebaseAuth().signInWithPopup(provider).then(function(result) {
+    const token = result.credential.accessToken;
+    const user = result.user;
+    console.info('logged in', token, user);
+    // TODO save the token
+  }).catch(function(error) {
+    console.error('login error', error);
+    // TODO display the error
+  });
 }
 
-export function logout() {
-  return firebaseAuth().signOut();
-}
+export const logout = () => firebaseAuth().signOut();
 
-export function login(email, pw) {
-  return firebaseAuth().signInWithEmailAndPassword(email, pw);
-}
+// export const isLoggedIn = () => firebaseAuth().currentUser;
 
-export function resetPassword(email) {
-  return firebaseAuth().sendPasswordResetEmail(email);
-}
-
-export function saveUser(user) {
-  console.info(user);
-  return FirebaseRef.child(`users/${user.uid}/info`)
-    .set({
-      email: user.email,
-      uid: user.uid
-    })
-    .then(() => user);
-}
+export const onAuthStateChanged = (cb) => firebaseAuth().onAuthStateChanged(cb);
