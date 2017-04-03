@@ -1,4 +1,4 @@
-import { firebaseAuth } from './FirebaseClient'
+import { firebaseAuth } from './firebase'
 
 export const login = () => {
   console.info('about to log in')

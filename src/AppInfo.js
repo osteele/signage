@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import { FirebaseRef } from './FirebaseClient';
+import { FirebaseRef } from './firebase';
 
 export default class AppInfoList extends Component {
   state = {

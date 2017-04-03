@@ -2,7 +2,7 @@ import React from 'react';
 import ReactFireMixin from 'reactfire';
 import reactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
-import { FirebaseRef } from './FirebaseClient';
+import { FirebaseRef } from './firebase';
 
 export default class SignageScreen extends React.Component {
   constructor(props, context) {
