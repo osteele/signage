@@ -6,31 +6,27 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 import { FirebaseRef } from './FirebaseClient';
 
 export default class Playlist extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.firebaseSequenceRef = FirebaseRef.child('playlist/sequence');
-    this.state = {
-      apps: [],
-      sequence: [],
-    };
-    this.createItem = this.createItem.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-  }
+  firebaseSequenceRef = FirebaseRef.child('playlist/sequence');
+  
+  state = {
+    apps: [],
+    sequence: [],
+  };
 
   componentDidMount() {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
     this.bindAsArray(this.firebaseSequenceRef, 'sequence');
   }
 
-  createItem(data) {
+  createItem = (data) => {
     this.firebaseSequenceRef.push(data);
   }
 
-  removeItem(item) {
+  removeItem = (item) => {
     this.firebaseSequenceRef.child(item['.key']).remove();
   }
 
-  renderItem(frame) {
+  renderItem = (frame) => {
     const app = this.state.apps[frame.app];
     return (<li key={frame['.key']}>
       <FrameInfo frame={frame} app={app} remove={() => this.removeItem(frame)} />

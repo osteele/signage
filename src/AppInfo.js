@@ -5,12 +5,9 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { FirebaseRef } from './FirebaseClient';
 
 export default class AppInfoList extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      apps: []
-    };
-  }
+  state = {
+    apps: []
+  };
 
   componentDidMount() {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
