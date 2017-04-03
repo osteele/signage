@@ -21,16 +21,18 @@ const Manager = () => (
       </Grid>
     </Navbar>
 
-    <Jumbotron>
-      <p>Sign in to edit the playlist.</p>
-      <p>
-        Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
-      </p>
-      <p>
-        Open <Link to="/view">{document.location.origin}/view</Link> on the screen
-        that is displaying the digital signage.
-      </p>
-    </Jumbotron>
+    <Grid>
+      <Jumbotron>
+        <p>Sign in to edit the playlist.</p>
+        <p>
+          Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
+        </p>
+        <p>
+          Open <Link to="/view">{document.location.origin}/view</Link> on the screen
+          that is displaying the digital signage.
+        </p>
+      </Jumbotron>
+    </Grid>
 
     <Grid>
       <Row>
@@ -45,12 +47,12 @@ const Manager = () => (
       </Row>
     </Grid>
 
-    <footer class="footer">
-      <div class="container">
-        <p>
+    <footer className="footer">
+      <div className="container">
+        <p className="text-muted">
           This application manages digital signage.
         </p>
-        <p>
+        <p className="text-muted">
           It manages a list of applications, and a playlist that sequences
           those applications.
         </p>
