@@ -10,9 +10,8 @@ export default class SignageScreen extends Component {
     config: {},
     playlist: {},
     sequence: [],
-    frame: null,
-    currentApp: null,
-    nextApp: null,
+    currentFrame: null,
+    nextFrame: null,
   };
 
   nextIndex = 0;
@@ -35,27 +34,38 @@ export default class SignageScreen extends Component {
   }
 
   advanceFrame() {
-    const { apps, playlist, sequence } = this.state;
+    const { playlist, sequence } = this.state;
     const playlistIndex = this.nextIndex;
     this.nextIndex = (1 + playlistIndex) % sequence.length;
-    const frame = sequence[playlistIndex];
+    const currentFrame = sequence[playlistIndex];
     const nextFrame = sequence[this.nextIndex];
-    if (!frame) return;
+    if (!currentFrame) return;
 
-    const duration = frame.duration || playlist.duration || 60;
+    const duration = currentFrame.duration || playlist.duration || 60;
     this.endFrameTime = new Date().getTime() + duration * 1000;
     console.info(`waiting ${duration} seconds`);
-    this.setState({
-      app: apps[frame.app],
-      frame: frame,
-      nextApp: apps[nextFrame.app]
-    });
+    this.setState({currentFrame, nextFrame});
+  }
+
+  renderApp = (frame) => {
+    const { config } = this.state;
+    const app = this.state.apps[frame.app];
+    const height = config.screen.height || '800px';
+    const width = config.screen.width || '100%';
+    const style = {position: 'relative', height, width};
+    return this.props.dummy ? (
+      <AppPagePlaceholder app={app} frame={frame} style={style} />
+    ) : app ? (
+      <iframe src={app.url} scrolling="no" frameBorder="0" style={style} />
+    ) : (
+      <div className="alert alert-danger">Missing app: {frame.app}</div>
+    );
   }
 
   render() {
-    const { app, frame, nextFrame, config } = this.state;
+    const { currentFrame, nextFrame, config } = this.state;
 
-    if (!app) {
+    if (!currentFrame) {
       return <div className="alert alert-info">Loading…</div>;
     }
 
@@ -63,14 +73,7 @@ export default class SignageScreen extends Component {
       return <div className="alert alert-danger">Missing configuration</div>;
     }
 
-    const height = config.screen.height || '800px';
-    const width = config.screen.width || '100%';
-    const style = {position: 'relative', height, width};
-    return this.props.dummy ? (
-      <AppPagePlaceholder app={app} frame={frame} style={style} />
-    ): (
-      <iframe src={app.url} scrolling="no" frameBorder="0" style={style} />
-    );
+    return this.renderApp(currentFrame);
   }
 }
 reactMixin(SignageScreen.prototype, ReactFireMixin);
