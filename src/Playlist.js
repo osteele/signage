@@ -7,7 +7,7 @@ import { FirebaseRef } from './firebase';
 
 export default class Playlist extends Component {
   firebaseSequenceRef = FirebaseRef.child('playlist/sequence');
-  
+
   state = {
     apps: [],
     sequence: [],
@@ -19,7 +19,8 @@ export default class Playlist extends Component {
   }
 
   createItem = (data) => {
-    this.firebaseSequenceRef.push(data);
+    const key = this.firebaseSequenceRef.push(data);
+    this.firebaseSequenceRef.child(key).setPriority(this.state.sequence.length);
   }
 
   removeItem = (item) => {
