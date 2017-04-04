@@ -10,9 +10,12 @@ export default class SignageScreen extends Component {
     config: {},
     playlist: {},
     sequence: [],
-    index: null,
+    frame: null,
+    currentApp: null,
+    nextApp: null,
   };
 
+  nextIndex = 0;
   endFrameTime = 0;
 
   componentDidMount() {
@@ -23,44 +26,41 @@ export default class SignageScreen extends Component {
     this.setInterval(this.tick, 1000);
   }
 
-  _setupFrame(frame) {
-    if (frame) {
-      const duration = frame.duration || this.state.playlist.duration || 60;
-      this.endFrameTime = new Date().getTime() + duration * 1000;
+  tick = () => {
+    const { apps, sequence } = this.state;
+    if (!apps.length || !sequence.length) return;
+    if (new Date().getTime() >= this.endFrameTime) {
+      this.advanceFrame();
     }
   }
 
-  tick = () => {
-    const state = this.state;
-    const { apps, sequence } = state;
-    if (!apps.length || !sequence.length) return;
-    if ((new Date()).getTime() >= this.endFrameTime) {
-      const index = (1 + (state.index || 0)) % sequence.length;
-      this.setState({index});
-      this._setupFrame(sequence[index]);
-    }
+  advanceFrame() {
+    const { apps, playlist, sequence } = this.state;
+    const playlistIndex = this.nextIndex;
+    this.nextIndex = (1 + playlistIndex) % sequence.length;
+    const frame = sequence[playlistIndex];
+    const nextFrame = sequence[this.nextIndex];
+    if (!frame) return;
+
+    const duration = frame.duration || playlist.duration || 60;
+    this.endFrameTime = new Date().getTime() + duration * 1000;
+    console.info(`waiting ${duration} seconds`);
+    this.setState({
+      app: apps[frame.app],
+      frame: frame,
+      nextApp: apps[nextFrame.app]
+    });
   }
 
   render() {
-    const state = this.state;
-    const { config, sequence } = state;
+    const { app, frame, nextFrame, config } = this.state;
 
-    if (state.index == null || !state.config.screen) {
-      return <h1>Loading…</h1>;
-    }
-
-    if (state.index > sequence.length) {
-      return <div className="alert alert-danger">invalid playlist index: {state.index}</div>;
-    }
-
-    const frame = sequence[state.index];
-    if (!frame) {
-      return <div className="alert alert-danger">invalid state index: {state.index}</div>;
-    }
-
-    const app = state.apps[frame.app];
     if (!app) {
-      return <div className="alert alert-danger">invalid app index: {frame.app}</div>;
+      return <div className="alert alert-info">Loading…</div>;
+    }
+
+    if (!config.screen) {
+      return <div className="alert alert-danger">Missing configuration</div>;
     }
 
     const height = config.screen.height || '800px';
@@ -69,9 +69,7 @@ export default class SignageScreen extends Component {
     return this.props.dummy ? (
       <AppPagePlaceholder app={app} frame={frame} style={style} />
     ): (
-      <iframe src={app.url} scrolling="no" frameBorder="0" style={style}>
-        <p>Your browser does not support iframes.</p>
-      </iframe>
+      <iframe src={app.url} scrolling="no" frameBorder="0" style={style} />
     );
   }
 }
