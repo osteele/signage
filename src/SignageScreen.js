@@ -47,12 +47,15 @@ export default class SignageScreen extends Component {
     this.setState({currentFrame, nextFrame});
   }
 
-  renderApp = (frame) => {
+  renderApp = (frame, prefetch = false) => {
     const { config } = this.state;
     const app = this.state.apps[frame.app];
     const height = config.screen.height || '800px';
     const width = config.screen.width || '100%';
     const style = {position: 'relative', height, width};
+    if (prefetch) {
+      style['display'] = 'none';
+    }
     return this.props.dummy ? (
       <AppPagePlaceholder app={app} frame={frame} style={style} />
     ) : app ? (
@@ -73,7 +76,10 @@ export default class SignageScreen extends Component {
       return <div className="alert alert-danger">Missing configuration</div>;
     }
 
-    return this.renderApp(currentFrame);
+    return <div>
+      {this.renderApp(currentFrame)}
+      {nextFrame && currentFrame != nextFrame && this.renderApp(nextFrame, true)}
+    </div>
   }
 }
 reactMixin(SignageScreen.prototype, ReactFireMixin);
