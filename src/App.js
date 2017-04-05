@@ -10,7 +10,7 @@ import './App.css'
 
 const FIREBASE_SCHEMA_FORMAT = 1
 
-const Manager = ({user}) =>
+const Manager = ({ user }) =>
   <div>
     <Navbar>
       <Grid>
@@ -63,7 +63,7 @@ const Manager = ({user}) =>
     </footer>
   </div>
 
-const LoginButton = ({signedIn}) =>
+const LoginButton = ({ signedIn }) =>
   signedIn
     ? <Button onClick={logout}>Sign out</Button>
     : <Button onClick={login}>Sign in</Button>

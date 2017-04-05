@@ -42,7 +42,7 @@ export default class SignageScreen extends Component {
     const duration = currentFrame.duration || playlist.duration || 60
     this.endFrameTime = new Date().getTime() + duration * 1000
     console.info(`waiting ${duration} seconds`)
-    this.setState({currentFrame, nextFrame})
+    this.setState({ currentFrame, nextFrame })
   }
 
   renderApp = (frame, prefetch = false) => {
@@ -77,7 +77,7 @@ reactMixin(SignageScreen.prototype, TimerMixin)
 const hashCode = (str) =>
   [].reduce.call(str, (p, c, i, a) => (p << 5) - p + a.charCodeAt(i), 0)
 
-function AppPagePlaceholder({app, frame, style}) {
+function AppPagePlaceholder({ app, frame, style }) {
   const h = hashCode(app.url)
   const r0 = (h >> 16) & 0xff, g0 = (h >> 8) & 0xff, b0 = h & 0xff
   const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2)

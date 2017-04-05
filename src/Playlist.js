@@ -27,7 +27,7 @@ export default class Playlist extends Component {
     this.firebaseSequenceRef.child(item['.key']).remove()
   }
 
-  onSortEnd = ({oldIndex, newIndex}) => {
+  onSortEnd = ({ oldIndex, newIndex }) => {
     arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, index) =>
       this.firebaseSequenceRef.child(item['.key']).setPriority(index)
     )
@@ -54,22 +54,22 @@ reactMixin(Playlist.prototype, ReactFireMixin)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 
-const PlayListItem = SortableElement(({item, app, editable, remove}) => (
+const PlayListItem = SortableElement(({ item, app, editable, remove }) => (
   <ListGroupItem key={item['.key']}>
     {editable && <Handle />}
     <FrameInfo frame={item} app={app} editable={editable} remove={() => remove(item)} />
   </ListGroupItem>
 ))
 
-const PlayListSequence = SortableContainer(({apps, items, editable, remove}) => (
+const PlayListSequence = SortableContainer(({ apps, items, editable, remove }) =>
   <div>
     {items.map((item, index) =>
       <PlayListItem item={item} key={item['.key']} index={index}
         app={apps[item.app]} editable={editable} remove={remove} />)}
   </div>
-))
+)
 
-const FrameInfo = ({app, editable, frame, remove}) => {
+const FrameInfo = ({ app, editable, frame, remove }) => {
   return <span>
     {app.name}
     {frame.duration && <span> ({frame.duration} seconds)</span>}
