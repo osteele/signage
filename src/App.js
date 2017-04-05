@@ -10,7 +10,7 @@ import './App.css';
 
 const FIREBASE_SCHEMA_FORMAT = 1;
 
-const Manager = () => (
+const Manager = ({user}) => (
   <div>
     <Navbar>
       <Grid>
@@ -19,14 +19,14 @@ const Manager = () => (
             <a href="/">Digital Signage Manager</a>
           </Navbar.Brand>
           <Navbar.Toggle />
-          <LoginButton />
+          <LoginButton signedIn={Boolean(user)} />
         </Navbar.Header>
       </Grid>
     </Navbar>
 
     <Grid>
       <Jumbotron>
-        <p>Sign in to edit the playlist.</p>
+        {user ? null : <p>Sign in to edit the playlist.</p>}
         <p>
           Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
         </p>
@@ -41,7 +41,7 @@ const Manager = () => (
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
-          <Playlist />
+          <Playlist editable={Boolean(user)} />
         </Col>
         <Col xs={6}>
           <h2>Applications</h2>
@@ -64,29 +64,16 @@ const Manager = () => (
   </div>
 )
 
-class LoginButton extends Component {
-  state = { user_uid: 0 };
-
-  constructor(props, context) {
-    super(props, context);
-    this.props = props;
-    onAuthStateChanged(
-      (user) => this.setState({user_uid: user && user.uid}));
-  }
-
-  isLoggedIn() {
-    return Boolean(this.state.user_uid);
-  }
-
-  render() {
-    return this.isLoggedIn()
-      ? <Button onClick={logout}>Sign out</Button>
-      : <Button onClick={login}>Sign in</Button>;
-  }
-}
+const LoginButton = ({signedIn}) =>
+  signedIn
+    ? <Button onClick={logout}>Sign out</Button>
+    : <Button onClick={login}>Sign in</Button>;
 
 class App extends Component {
+  state = { user: null };
+
   componentDidMount() {
+    onAuthStateChanged((user) => this.setState({ user }));
     FirebaseRef.child('version').on('value', (snapshot) => {
       if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
         window.location.reload();
@@ -97,7 +84,7 @@ class App extends Component {
   render = () =>
     <Router>
       <div>
-        <Route exact path="/" component={Manager} />
+        <Route exact path="/" component={() => <Manager user={this.state.user} />} />
         <Route exact path="/view" component={SignageScreen} />
         <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
       </div>

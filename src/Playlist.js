@@ -27,13 +27,6 @@ export default class Playlist extends Component {
     this.firebaseSequenceRef.child(item['.key']).remove();
   }
 
-  renderItem = (frame) => {
-    const app = this.state.apps[frame.app];
-    return (<li key={frame['.key']}>
-      <FrameInfo frame={frame} app={app} remove={() => this.removeItem(frame)} />
-    </li>);
-  }
-
   onSortEnd = ({oldIndex, newIndex}) => {
     arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, index) =>
       this.firebaseSequenceRef.child(item['.key']).setPriority(index)
@@ -44,12 +37,16 @@ export default class Playlist extends Component {
   render() {
     return (
       <div>
-        <PlayListSequence apps={this.state.apps} items={this.state.sequence}
+        <PlayListSequence
+          apps={this.state.apps}
+          items={this.state.sequence}
+          editable={this.props.editable}
           remove={this.removeItem.bind(this)}
-          onSortEnd={this.onSortEnd} useDragHandle={true} axis={'y'} />
-        <ListGroupItem>
+          onSortEnd={this.onSortEnd}
+          useDragHandle={true} axis={'y'} />
+        {this.props.editable && <ListGroupItem>
           <CreateFrame apps={this.state.apps} create={this.createItem} />
-        </ListGroupItem>
+        </ListGroupItem>}
       </div>
     );
   }
@@ -58,28 +55,29 @@ reactMixin(Playlist.prototype, ReactFireMixin);
 
 const Handle = SortableHandle(() => <div className="handle" />);
 
-const PlayListItem = SortableElement(({item, app, remove}) => (
+const PlayListItem = SortableElement(({item, app, editable, remove}) => (
   <ListGroupItem key={item['.key']}>
-    <Handle />
-    <FrameInfo frame={item} app={app} remove={() => remove(item)} />
+    {editable && <Handle />}
+    <FrameInfo frame={item} app={app} editable={editable} remove={() => remove(item)} />
   </ListGroupItem>
 ));
 
-const PlayListSequence = SortableContainer(({apps, items, remove}) => (
+const PlayListSequence = SortableContainer(({apps, items, editable, remove}) => (
   <div>
     {items.map((item, index) =>
       <PlayListItem item={item} key={item['.key']} index={index}
-        app={apps[item.app]} remove={remove} />)}
+        app={apps[item.app]} editable={editable} remove={remove} />)}
   </div>
 ));
 
-const FrameInfo = ({app, frame, remove}) => (
-  <span>
+const FrameInfo = ({app, editable, frame, remove}) => {
+  return <span>
     {app.name}
     {frame.duration && <span> ({frame.duration} seconds)</span>}
-    &nbsp;<i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}} onClick={remove}></i>
+    &nbsp;
+    {editable && <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}} onClick={remove}></i>}
   </span>
-)
+}
 
 class CreateFrame extends Component {
   constructor(props, context) {
