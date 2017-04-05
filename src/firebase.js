@@ -1,10 +1,10 @@
-import Firebase from 'firebase';
-import FirebaseConfig from './firebase.json';
+import Firebase from 'firebase'
+import FirebaseConfig from './firebase.json'
 
-export { Firebase };
+export { Firebase }
 
-Firebase.initializeApp(FirebaseConfig);
-Firebase.auth();
+Firebase.initializeApp(FirebaseConfig)
+Firebase.auth()
 
-export const FirebaseRef = Firebase.database().ref();
+export const FirebaseRef = Firebase.database().ref()
 export const firebaseAuth = Firebase.auth

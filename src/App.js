@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap';
+import React, { Component } from 'react'
+import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { login, logout, onAuthStateChanged } from './auth'
-import { FirebaseRef } from './firebase';
-import AppInfoList from './AppInfo';
-import Playlist from './Playlist';
+import { FirebaseRef } from './firebase'
+import AppInfoList from './AppInfo'
+import Playlist from './Playlist'
 import SignageScreen from './SignageScreen'
-import './App.css';
+import './App.css'
 
-const FIREBASE_SCHEMA_FORMAT = 1;
+const FIREBASE_SCHEMA_FORMAT = 1
 
-const Manager = ({user}) => (
+const Manager = ({user}) =>
   <div>
     <Navbar>
       <Grid>
@@ -62,23 +62,22 @@ const Manager = ({user}) => (
       </div>
     </footer>
   </div>
-)
 
 const LoginButton = ({signedIn}) =>
   signedIn
     ? <Button onClick={logout}>Sign out</Button>
-    : <Button onClick={login}>Sign in</Button>;
+    : <Button onClick={login}>Sign in</Button>
 
 class App extends Component {
-  state = { user: null };
+  state = { user: null }
 
   componentDidMount() {
-    onAuthStateChanged((user) => this.setState({ user }));
+    onAuthStateChanged((user) => this.setState({ user }))
     FirebaseRef.child('version').on('value', (snapshot) => {
       if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
-        window.location.reload();
+        window.location.reload()
       }
-    });
+    })
   }
 
   render = () =>
@@ -91,4 +90,4 @@ class App extends Component {
     </Router>
 }
 
-export default App;
+export default App
