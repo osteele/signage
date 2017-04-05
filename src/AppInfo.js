@@ -8,28 +8,30 @@ import { FirebaseRef } from './firebase'
 const FirebaseAppsRef = FirebaseRef.child('apps')
 
 export default class AppInfoList extends Component {
+  firebaseSequenceRef = FirebaseAppsRef
+
   state = {
     apps: null
   }
 
   componentDidMount() {
-    this.bindAsArray(FirebaseAppsRef, 'apps')
+    this.bindAsObject(FirebaseAppsRef, 'apps')
   }
 
-  renderItem(app) {
-    return (
-      <ListGroupItem key={app['.key']}>
-        <AppInfo app={app} />
-      </ListGroupItem>
-    )
-  }
+  removeItemByKey = (key) =>
+    this.firebaseSequenceRef.child(key).remove()
 
-  render = () =>
-    this.state.apps ? (
+  render = () => {
+    return this.state.apps ? (
       <ListGroup>
-        {this.state.apps.map(this.renderItem)}
+        {this.state.apps.map((app, key) =>
+          <ListGroupItem key={key}>
+            <AppInfo app={app} remove={() => this.removeItemByKey(key)} />
+          </ListGroupItem>
+        )}
       </ListGroup>
     ) : <div className="alert alert-info">Loading…</div>
+  }
 }
 reactMixin(AppInfoList.prototype, ReactFireMixin)
 
@@ -45,6 +47,7 @@ class AppInfo extends Component {
 
   render() {
     const app = this.props.app
+    const editable = true
     return (
       <div>
         <h3>{app.name}
@@ -57,6 +60,9 @@ class AppInfo extends Component {
           validate={this.isWellFormedURL}
           className='project-url'
           classInvalid='invalid' /></code>
+          {editable &&
+            <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
+              onClick={this.props.remove} />}
       </div>
     )
   }
