@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { login, logout, onAuthStateChanged } from './auth'
+import { FirebaseRef } from './firebase';
 import AppInfoList from './AppInfo';
 import Playlist from './Playlist';
 import SignageScreen from './SignageScreen'
 import './App.css';
+
+const FIREBASE_SCHEMA_FORMAT = 1;
 
 const Manager = () => (
   <div>
@@ -82,14 +85,23 @@ class LoginButton extends Component {
   }
 }
 
-const App = () => (
-  <Router>
-    <div>
-      <Route exact path="/" component={Manager} />
-      <Route exact path="/view" component={SignageScreen} />
-      <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
-    </div>
-  </Router>
-)
+class App extends Component {
+  componentDidMount() {
+    FirebaseRef.child('version').on('value', (snapshot) => {
+      if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
+        window.location.reload();
+      }
+    });
+  }
+
+  render = () =>
+    <Router>
+      <div>
+        <Route exact path="/" component={Manager} />
+        <Route exact path="/view" component={SignageScreen} />
+        <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
+      </div>
+    </Router>
+}
 
 export default App;
