@@ -9,8 +9,8 @@ export default class Playlist extends Component {
   firebaseSequenceRef = FirebaseRef.child('playlist/sequence')
 
   state = {
-    apps: [],
-    sequence: [],
+    apps: null,
+    sequence: null,
   }
 
   componentDidMount() {
@@ -30,8 +30,8 @@ export default class Playlist extends Component {
     )
   }
 
-  render() {
-    return (
+  render = () =>
+    this.state.apps && this.state.sequence ? (
       <div>
         <PlayListSequence
           apps={this.state.apps}
@@ -45,8 +45,7 @@ export default class Playlist extends Component {
             <AddPlayListItem apps={this.state.apps} create={this.createItem} />
           </ListGroupItem>}
       </div>
-    )
-  }
+    ) : <div className="alert alert-info">Loading…</div>
 }
 reactMixin(Playlist.prototype, ReactFireMixin)
 

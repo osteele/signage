@@ -9,7 +9,7 @@ const FirebaseAppsRef = FirebaseRef.child('apps')
 
 export default class AppInfoList extends Component {
   state = {
-    apps: []
+    apps: null
   }
 
   componentDidMount() {
@@ -24,13 +24,12 @@ export default class AppInfoList extends Component {
     )
   }
 
-  render() {
-    return (
+  render = () =>
+    this.state.apps ? (
       <ListGroup>
         {this.state.apps.map(this.renderItem)}
       </ListGroup>
-    )
-  }
+    ) : <div className="alert alert-info">Loading…</div>
 }
 reactMixin(AppInfoList.prototype, ReactFireMixin)
 
@@ -56,7 +55,8 @@ class AppInfo extends Component {
           change={this.changedState}
           propName='url'
           validate={this.isWellFormedURL}
-          classInvalid="invalid" /></code>
+          className='project-url'
+          classInvalid='invalid' /></code>
       </div>
     )
   }

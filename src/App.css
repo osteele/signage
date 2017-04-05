@@ -21,4 +21,9 @@
     cursor: row-resize;
 }
 
+.project-url {
+  width: 100%;
+  word-wrap: break-word;
+}
+
 .invalid { background: #fee; }
