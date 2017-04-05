@@ -44,7 +44,7 @@ export default class Playlist extends Component {
           onSortEnd={this.onSortEnd}
           useDragHandle={true} axis={'y'} />
         {this.props.editable && <ListGroupItem>
-          <CreateFrame apps={this.state.apps} create={this.createItem} />
+          <AddPlayListItem apps={this.state.apps} create={this.createItem} />
         </ListGroupItem>}
       </div>
     )
@@ -54,12 +54,19 @@ reactMixin(Playlist.prototype, ReactFireMixin)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 
-const PlayListItem = SortableElement(({ item, app, editable, remove }) => (
+const PlayListItem = SortableElement(({ item, app, editable, remove }) =>
   <ListGroupItem key={item['.key']}>
     {editable && <Handle />}
-    <FrameInfo frame={item} app={app} editable={editable} remove={() => remove(item)} />
+    <span>
+      {app.name}
+      {item.duration && <span> ({item.duration} seconds)</span>}
+      &nbsp;
+      {editable &&
+        <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
+          onClick={() => remove(item)} />}
+    </span>
   </ListGroupItem>
-))
+)
 
 const PlayListSequence = SortableContainer(({ apps, items, editable, remove }) =>
   <div>
@@ -69,21 +76,13 @@ const PlayListSequence = SortableContainer(({ apps, items, editable, remove }) =
   </div>
 )
 
-const FrameInfo = ({ app, editable, frame, remove }) => {
-  return <span>
-    {app.name}
-    {frame.duration && <span> ({frame.duration} seconds)</span>}
-    &nbsp;
-    {editable && <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}} onClick={remove}></i>}
-  </span>
-}
 
-class CreateFrame extends Component {
+class AddPlayListItem extends Component {
   state = { app: 0 }
 
   handleSubmit(event) {
-    this.props.create(this.state)
     event.preventDefault()
+    this.props.create(this.state)
   }
 
   render() {
