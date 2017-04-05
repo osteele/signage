@@ -7,7 +7,6 @@ import { FirebaseRef } from './firebase';
 export default class SignageScreen extends Component {
   state = {
     apps: [],
-    config: {},
     playlist: {},
     sequence: [],
     currentFrame: null,
@@ -19,7 +18,6 @@ export default class SignageScreen extends Component {
 
   componentDidMount() {
     this.bindAsArray(FirebaseRef.child('apps'), 'apps');
-    this.bindAsObject(FirebaseRef.child('config'), 'config');
     this.bindAsObject(FirebaseRef.child('playlist'), 'playlist');
     this.bindAsArray(FirebaseRef.child('playlist/sequence'), 'sequence');
     this.setInterval(this.tick, 1000);
@@ -48,37 +46,27 @@ export default class SignageScreen extends Component {
   }
 
   renderApp = (frame, prefetch = false) => {
-    const { config } = this.state;
     const app = this.state.apps[frame.app];
-    const height = config.screen.height || '800px';
-    const width = config.screen.width || '100%';
-    const style = {position: 'relative', height, width};
-    if (prefetch) {
-      style['display'] = 'none';
-    }
+    const style = prefetch ? { 'display': 'none' } : {};
     return this.props.dummy ? (
       <AppPagePlaceholder app={app} frame={frame} style={style} />
     ) : app ? (
-      <iframe src={app.url} scrolling="no" frameBorder="0" style={style} />
+      <iframe src={app.url} className="embedded-app" scrolling="no" frameBorder="0" style={style} />
     ) : (
       <div className="alert alert-danger">Missing app: {frame.app}</div>
     );
   }
 
   render() {
-    const { currentFrame, nextFrame, config } = this.state;
+    const { currentFrame, nextFrame } = this.state;
 
     if (!currentFrame) {
       return <div className="alert alert-info">Loading…</div>;
     }
 
-    if (!config.screen) {
-      return <div className="alert alert-danger">Missing configuration</div>;
-    }
-
     return <div>
       {this.renderApp(currentFrame)}
-      {nextFrame && currentFrame != nextFrame && this.renderApp(nextFrame, true)}
+      {nextFrame && currentFrame !== nextFrame && this.renderApp(nextFrame, true)}
     </div>
   }
 }
@@ -95,7 +83,7 @@ function AppPagePlaceholder({app, frame, style}) {
   const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2);
   const background = `rgb(${r}, ${g}, ${b})`;
   const style1 = {...style, ...{background}};
-  return (<div className="app-placeholder alert" style={style1}>
+  return (<div className="embedded-app alert" style={style1}>
     <h1>
       {app.name}
       {frame.duration && <small> ({frame.duration} seconds)</small>}
