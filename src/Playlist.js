@@ -18,18 +18,15 @@ export default class Playlist extends Component {
     this.bindAsArray(this.firebaseSequenceRef, 'sequence')
   }
 
-  createItem = (data) => {
-    const key = this.firebaseSequenceRef.push(data)
-    this.firebaseSequenceRef.child(key).setPriority(this.state.sequence.length)
-  }
+  createItem = (item) =>
+    this.firebaseSequenceRef.push({'.priority': this.state.sequence.length, ...item})
 
-  removeItem = (item) => {
+  removeItem = (item) =>
     this.firebaseSequenceRef.child(item['.key']).remove()
-  }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
-    arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, index) =>
-      this.firebaseSequenceRef.child(item['.key']).setPriority(index)
+    arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, position) =>
+      this.firebaseSequenceRef.child(item['.key']).setPriority(position)
     )
   }
 
