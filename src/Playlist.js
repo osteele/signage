@@ -40,9 +40,10 @@ export default class Playlist extends Component {
           remove={this.removeItem.bind(this)}
           onSortEnd={this.onSortEnd}
           useDragHandle={true} axis={'y'} />
-        {this.props.editable && <ListGroupItem>
-          <AddPlayListItem apps={this.state.apps} create={this.createItem} />
-        </ListGroupItem>}
+        {this.props.editable &&
+          <ListGroupItem>
+            <AddPlayListItem apps={this.state.apps} create={this.createItem} />
+          </ListGroupItem>}
       </div>
     )
   }
@@ -57,7 +58,7 @@ const PlayListItem = SortableElement(({ item, app, editable, remove }) =>
     <span>
       {app.name}
       {item.duration && <span> ({item.duration} seconds)</span>}
-      &nbsp;
+      {' '}
       {editable &&
         <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
           onClick={() => remove(item)} />}
