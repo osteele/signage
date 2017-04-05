@@ -18,8 +18,8 @@ export default class Playlist extends Component {
     this.bindAsArray(this.firebaseSequenceRef, 'sequence')
   }
 
-  createItem = (item) =>
-    this.firebaseSequenceRef.push({'.priority': this.state.sequence.length, ...item})
+  createItem = (data) =>
+    this.firebaseSequenceRef.push({'.priority': this.state.sequence.length, ...data})
 
   removeItem = (item) =>
     this.firebaseSequenceRef.child(item['.key']).remove()
@@ -31,7 +31,7 @@ export default class Playlist extends Component {
   }
 
   render = () =>
-    this.state.apps && this.state.sequence ? (
+    this.state.apps && this.state.apps.length && this.state.sequence ? (
       <div>
         <PlayListSequence
           apps={this.state.apps}
@@ -40,7 +40,7 @@ export default class Playlist extends Component {
           remove={this.removeItem.bind(this)}
           onSortEnd={this.onSortEnd}
           useDragHandle={true} axis={'y'} />
-        {this.props.editable &&
+        {this.props.editable && this.state.apps && this.state.apps.length &&
           <ListGroupItem>
             <AddPlayListItem apps={this.state.apps} create={this.createItem} />
           </ListGroupItem>}
@@ -84,20 +84,18 @@ class AddPlayListItem extends Component {
 
   render() {
     if (!this.props.apps.length) return null
-    return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <label>
-          Add:
-          <select defaultValue={this.props.apps[0]['.key']}
-              onChange={(e) => this.setState({app: e.target.value})}>
-            {this.props.apps.map((app) =>
-              <option key={app['.key']} value={app['.key']}>
-                {app.name}
-              </option>)}
-          </select>
-        </label>
-        <input type="submit" value="Create" />
-      </form>
-    )
+    return <form onSubmit={this.handleSubmit.bind(this)}>
+      <label>
+        Add:
+        <select defaultValue={this.props.apps[0]['.key']}
+            onChange={(e) => this.setState({app: e.target.value})}>
+          {this.props.apps.map((app) =>
+            <option key={app['.key']} value={app['.key']}>
+              {app.name}
+            </option>)}
+        </select>
+      </label>
+      <input type="submit" value="Create" />
+    </form>
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import { ControlLabel, FormGroup, FormControl } from 'react-bootstrap'
 import { RIETextArea } from 'riek'
 import { FirebaseRef } from './firebase'
 
@@ -18,17 +19,25 @@ export default class AppInfoList extends Component {
     this.bindAsObject(FirebaseAppsRef, 'apps')
   }
 
+  createItem = (data) =>
+    this.firebaseSequenceRef.push({'.priority': Object.keys(this.state.apps).length, ...data})
+
   removeItemByKey = (key) =>
     this.firebaseSequenceRef.child(key).remove()
 
   render = () => {
-    return this.state.apps ? (
+    const apps = this.state.apps
+    const keys = Object.keys(apps || {}).filter((key) => key[0] !== '.')
+    return apps ? (
       <ListGroup>
-        {this.state.apps.map((app, key) =>
+        {keys.map((key) =>
           <ListGroupItem key={key}>
-            <AppInfo app={app} remove={() => this.removeItemByKey(key)} />
+            <AppInfo app={apps[key]} editable={true} remove={() => this.removeItemByKey(key)} />
           </ListGroupItem>
         )}
+        <ListGroupItem>
+          <AddAppInfo create={this.createItem} />
+        </ListGroupItem>
       </ListGroup>
     ) : <div className="alert alert-info">Loading…</div>
   }
@@ -47,7 +56,6 @@ class AppInfo extends Component {
 
   render() {
     const app = this.props.app
-    const editable = true
     return (
       <div>
         <h3>{app.name}
@@ -60,10 +68,43 @@ class AppInfo extends Component {
           validate={this.isWellFormedURL}
           className='project-url'
           classInvalid='invalid' /></code>
-          {editable &&
+          {this.props.editable &&
             <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
               onClick={this.props.remove} />}
       </div>
     )
   }
+}
+
+
+class AddAppInfo extends Component {
+  state = { name: "name", url: "url" }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    this.props.create(this.state)
+  }
+
+  handleChange = (propName) => (e) => {
+    const state = {}
+    state[propName] = e.target.value
+    this.setState(state)
+  }
+
+  render = () =>
+    <form onSubmit={this.handleSubmit.bind(this)}>
+      <FormGroup
+        controlId="formBasicText"
+        >
+        <ControlLabel>Add an application</ControlLabel>
+        <FormControl type="text"
+          placeholder="Enter text"
+          onChange={this.handleChange('name')} />
+        <FormControl type="text"
+          placeholder="Enter URL"
+          onChange={this.handleChange('url')} />
+        <FormControl.Feedback />
+      </FormGroup>
+      <input type="submit" value="Create" />
+    </form>
 }
