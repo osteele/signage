@@ -37,7 +37,7 @@ export default class AppList extends Component {
       <ListGroup>
         {keys.map((key) =>
           <ListGroupItem key={key}>
-            <AppInfo app={apps[key]} editable={true} remove={() => this.removeItemByKey(key)} />
+            <AppInfo app={apps[key]} appKey={key} editable={true} remove={() => this.removeItemByKey(key)} />
           </ListGroupItem>
         )}
         <ListGroupItem>
@@ -51,9 +51,9 @@ reactMixin(AppList.prototype, ReactFireMixin)
 
 class AppInfo extends Component {
   changedState = (state) => {
-    const app = this.props.app
+    const ref = FirebaseAppsRef.child(this.props.appKey)
     for (let [k, v] of Object.entries(state)) {
-      FirebaseAppsRef.child(app['.key']).child(k).set(v)
+      ref.child(k).set(v)
     }
   }
 
@@ -106,6 +106,7 @@ class AddAppInfo extends Component {
           onChange={this.handleChange('name')} />
         <FormControl type="text"
           placeholder="URL"
+          className="project-url"
           onChange={this.handleChange('url')} />
         <FormControl.Feedback />
       </FormGroup>
