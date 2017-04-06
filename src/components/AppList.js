@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-import { ListGroup, ListGroupItem } from 'react-bootstrap'
-import { ControlLabel, FormGroup, FormControl } from 'react-bootstrap'
+import { Button, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { ControlLabel, FormControl } from 'react-bootstrap'
 import { RIEInput, RIETextArea } from 'riek'
 import { FirebaseRef } from '../api/firebase'
 
@@ -104,19 +104,15 @@ class AddAppInfo extends Component {
 
   render = () =>
     <form onSubmit={this.handleSubmit.bind(this)}>
-      <FormGroup
-        controlId="formBasicText"
-        >
-        <ControlLabel>Add an application</ControlLabel>
-        <FormControl type="text"
-          placeholder="name"
-          onChange={this.handleChange('name')} />
-        <FormControl type="text"
-          placeholder="URL"
-          className="project-url"
-          onChange={this.handleChange('url')} />
-        <FormControl.Feedback />
-      </FormGroup>
-      <input type="submit" value="Create" />
+      <ControlLabel>Add an application</ControlLabel>
+      <FormControl type="text"
+        placeholder="name"
+        onChange={this.handleChange('name')} />
+      <FormControl type="text"
+        placeholder="URL"
+        className="project-url"
+        onChange={this.handleChange('url')} />
+      <FormControl.Feedback />
+      <Button type="submit">Create</Button>
     </form>
 }

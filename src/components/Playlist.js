@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-import { ListGroupItem } from 'react-bootstrap'
+import { Button, ControlLabel, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { FirebaseRef } from '../api/firebase'
 
@@ -85,17 +85,15 @@ class AddPlayListItem extends Component {
     if (!this.props.apps) return null
     const keys = Object.keys(this.props.apps).filter((k) => k[0] !== '.')
     return <form onSubmit={this.handleSubmit.bind(this)}>
-      <label>
-        Application:
-        <select defaultValue={this.props.apps[0]['.key']}
-            onChange={(e) => this.setState({app: e.target.value})}>
-          {keys.map((key) =>
-            <option key={key} value={key}>
-              {this.props.apps[key].name}
-            </option>)}
-        </select>
-      </label>
-      <input type="submit" value="Add" />
+      <ControlLabel>Application:</ControlLabel>
+      <select defaultValue={this.props.apps[0]['.key']}
+          onChange={(e) => this.setState({app: e.target.value})}>
+        {keys.map((key) =>
+          <option key={key} value={key}>
+            {this.props.apps[key].name}
+          </option>)}
+      </select>
+      <Button type="submit" bsSize="xsmall" className="pull-right">Add</Button>
     </form>
   }
 }
