@@ -17,15 +17,14 @@ export default class SignageScreen extends Component {
   endFrameTime = 0
 
   componentDidMount() {
-    this.bindAsArray(FirebaseRef.child('apps'), 'apps')
+    this.bindAsObject(FirebaseRef.child('apps'), 'apps')
     this.bindAsObject(FirebaseRef.child('playlist'), 'playlist')
     this.bindAsArray(FirebaseRef.child('playlist/sequence'), 'sequence')
     this.setInterval(this.tick, 1000)
   }
 
   tick = () => {
-    const { apps, sequence } = this.state
-    if (!apps.length || !sequence.length) return
+    if (!Object.keys(this.state.apps).length || !this.state.sequence.length) return
     if (new Date().getTime() >= this.endFrameTime) {
       this.advanceFrame()
     }
