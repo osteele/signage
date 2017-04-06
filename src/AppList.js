@@ -64,13 +64,15 @@ class AppInfo extends Component {
     const app = this.props.app
     return (
       <div>
+        {this.props.editable &&
+          <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
+            onClick={this.props.remove} />}
         <h3>
           <RIEInput
             value={app.name}
             change={this.changedState}
             propName='name'
             validate={this.appNameIsValid}
-            className='project-url'
             classInvalid='invalid' />
           <small> (<a href="{app.url}" target="_">site</a>)</small>
         </h3>
@@ -81,9 +83,6 @@ class AppInfo extends Component {
           validate={this.urlIsValid}
           className='project-url'
           classInvalid='invalid' />
-        {this.props.editable &&
-          <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
-            onClick={this.props.remove} />}
       </div>
     )
   }
