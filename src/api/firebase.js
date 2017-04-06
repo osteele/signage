@@ -1,5 +1,5 @@
 import Firebase from 'firebase'
-import FirebaseConfig from './firebase.json'
+import FirebaseConfig from '../config/firebase.json'
 
 export { Firebase }
 

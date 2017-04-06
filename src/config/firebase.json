@@ -1,0 +1,8 @@
+{
+  "apiKey"           : "AIzaSyDKp76PIAlpPxKysPqsxRD1nDJ9X3PDhn0",
+  "authDomain"       : "olin-library-signage.firebaseapp.com",
+  "databaseURL"      : "https://olin-library-signage.firebaseio.com",
+  "projectId"        : "olin-library-signage",
+  "storageBucket"    : "olin-library-signage.appspot.com",
+  "messagingSenderId": "310981887420"
+}

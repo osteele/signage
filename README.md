@@ -10,7 +10,7 @@ These instructions use the [Yarn](https://yarnpkg.com) package manager. See
 
 2. Install packages: execute `yarn`.
 
-3. Create a Firebase account. Create a file `src/firebasejson` with the configuration information. It should look like `src/firebase.json.template`.
+3. Create a Firebase account. Create a file `src/config/firebase.json` with the configuration information. It should look like `src/config/firebase.json.template`.
 
 
 ## Develop

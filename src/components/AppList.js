@@ -4,7 +4,7 @@ import reactMixin from 'react-mixin'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ControlLabel, FormGroup, FormControl } from 'react-bootstrap'
 import { RIEInput, RIETextArea } from 'riek'
-import { FirebaseRef } from '../firebase'
+import { FirebaseRef } from '../api/firebase'
 
 const FirebaseAppsRef = FirebaseRef.child('apps')
 
