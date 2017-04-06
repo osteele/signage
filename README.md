@@ -4,26 +4,41 @@ A web application to (1) manage a playlist for digital signage, and (2) drive a 
 
 ## Install
 
-1. Install `node`. Optionally install `yarn`. On macOS: `brew install yarn`.
+These instructions use the [Yarn](https://yarnpkg.com) package manager. See
 
-2. `npm install` or `yarn`.
+1. Install `node` and `yarn`. On macOS: `brew install node yarn`.
+
+2. Install packages: execute `yarn`.
 
 3. Create a Firebase account. Create a file `src/firebasejson` with the configuration information. It should look like `src/firebase.json.template`.
 
+
 ## Develop
 
-`npm start` or `yarn start`
+Execute `yarn start`.
+
 
 ## Configure Deployment
 
 [These instructions deploy as a static single-page application on Firebase.]
 
-1. `npm install -g firebase-tools` or `yarn global add firebase-tools`.
+1. `yarn global add firebase-tools`.
 
 2. `firebase init`. Don't overwrite existing files.
 
+
 ## Deploy
 
-``` bash
-npm run build && firebase deploy
-```
+`yarn deploy`
+
+
+## Appendix: A note on Yarn
+
+These instructions use [yarn](https://yarnpkg.com). To use `npm` instead, use the following substitutions.
+
+yarn                             | npm
+---------------------------------|--------------------------------
+`yarn`                           | `npm install`
+`yarn start`                     | `npm start`
+`yarn global add firebase-tools` | `npm install -g firebase-tools`
+`yarn deploy`                    | `npm run deploy`
