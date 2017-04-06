@@ -14,7 +14,7 @@ export default class Playlist extends Component {
   }
 
   componentDidMount() {
-    this.bindAsArray(FirebaseRef.child('apps'), 'apps')
+    this.bindAsObject(FirebaseRef.child('apps'), 'apps')
     this.bindAsArray(this.firebaseSequenceRef, 'sequence')
   }
 
@@ -31,7 +31,7 @@ export default class Playlist extends Component {
   }
 
   render = () =>
-    this.state.apps && this.state.apps.length && this.state.sequence ? (
+    Object.keys(this.state.apps || {}).length && this.state.sequence ? (
       <div>
         <PlayListSequence
           apps={this.state.apps}
@@ -40,7 +40,7 @@ export default class Playlist extends Component {
           remove={this.removeItem.bind(this)}
           onSortEnd={this.onSortEnd}
           useDragHandle={true} axis={'y'} />
-        {this.props.editable && this.state.apps && this.state.apps.length &&
+        {this.props.editable &&
           <ListGroupItem>
             <AddPlayListItem apps={this.state.apps} create={this.createItem} />
           </ListGroupItem>}
@@ -51,7 +51,7 @@ reactMixin(Playlist.prototype, ReactFireMixin)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 
-const PlayListItem = SortableElement(({ item, app, editable, remove }) =>
+let PlayListItem = ({ item, app, editable, remove }) =>
   <ListGroupItem key={item['.key']}>
     {editable && <Handle />}
     <span>
@@ -63,16 +63,15 @@ const PlayListItem = SortableElement(({ item, app, editable, remove }) =>
           onClick={() => remove(item)} />}
     </span>
   </ListGroupItem>
-)
+PlayListItem = SortableElement(PlayListItem)
 
-const PlayListSequence = SortableContainer(({ apps, items, editable, remove }) =>
+let PlayListSequence = ({ apps, items, editable, remove }) =>
   <div>
     {items.map((item, index) =>
       <PlayListItem item={item} key={item['.key']} index={index}
         app={apps[item.app]} editable={editable} remove={remove} />)}
   </div>
-)
-
+PlayListSequence = SortableContainer(PlayListSequence)
 
 class AddPlayListItem extends Component {
   state = { app: 0 }
@@ -83,15 +82,16 @@ class AddPlayListItem extends Component {
   }
 
   render() {
-    if (!this.props.apps.length) return null
+    if (!this.props.apps) return null
+    const keys = Object.keys(this.props.apps).filter((k) => k[0] !== '.')
     return <form onSubmit={this.handleSubmit.bind(this)}>
       <label>
         Add:
         <select defaultValue={this.props.apps[0]['.key']}
             onChange={(e) => this.setState({app: e.target.value})}>
-          {this.props.apps.map((app) =>
-            <option key={app['.key']} value={app['.key']}>
-              {app.name}
+          {keys.map((key) =>
+            <option key={key} value={key}>
+              {this.props.apps[key].name}
             </option>)}
         </select>
       </label>
