@@ -74,8 +74,9 @@ class AppInfo extends Component {
             propName='name'
             validate={this.appNameIsValid}
             classInvalid='invalid' />
-          <small> (<a href="{app.url}" target="_">site</a>)</small>
         </h3>
+        <a className="fa fa-external-link" href="{app.url}" target="_"></a>
+        {' '}
         <RIETextArea
           value={app.url}
           change={this.changedState}

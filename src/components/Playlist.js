@@ -85,7 +85,7 @@ class AddPlayListItem extends Component {
     if (!this.props.apps) return null
     const keys = Object.keys(this.props.apps).filter((k) => k[0] !== '.')
     return <Form inline onSubmit={this.handleSubmit.bind(this)}>
-      <ControlLabel>Application:</ControlLabel>
+      <ControlLabel>Application:&nbsp;</ControlLabel>
       <FormControl componentClass="select"
           defaultValue={this.props.apps[0]['.key']}
           onChange={(e) => this.setState({app: e.target.value})}>
