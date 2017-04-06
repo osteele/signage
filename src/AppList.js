@@ -27,7 +27,12 @@ export default class AppList extends Component {
 
   render = () => {
     const apps = this.state.apps
-    const keys = Object.keys(apps || {}).filter((key) => key[0] !== '.')
+    const keys = Object.keys(apps || {})
+      .filter((key) => key[0] !== '.')
+      .sort((k0, k1) => {
+        const v0 = apps[k0].name.toLowerCase(), v1 = apps[k1].name.toLowerCase()
+        return v0 < v1 ? -1 : v0 > v1 ? 1 : 0
+      })
     return apps ? (
       <ListGroup>
         {keys.map((key) =>
