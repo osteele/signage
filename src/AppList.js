@@ -3,7 +3,7 @@ import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ControlLabel, FormGroup, FormControl } from 'react-bootstrap'
-import { RIETextArea } from 'riek'
+import { RIEInput, RIETextArea } from 'riek'
 import { FirebaseRef } from './firebase'
 
 const FirebaseAppsRef = FirebaseRef.child('apps')
@@ -53,24 +53,32 @@ class AppInfo extends Component {
   changedState = (state) => {
     const ref = FirebaseAppsRef.child(this.props.appKey)
     for (let [k, v] of Object.entries(state)) {
-      ref.child(k).set(v)
+      ref.child(k).set(v.trim())
     }
   }
 
-  isWellFormedURL = (url) => url.match(/^https?:\/\/.+/)
+  appNameIsValid = (name) => name.trim().match(/./)
+  urlIsValid = (url) => url.match(/^https?:\/\/.+/)
 
   render() {
     const app = this.props.app
     return (
       <div>
-        <h3>{app.name}
+        <h3>
+          <RIEInput
+            value={app.name}
+            change={this.changedState}
+            propName='name'
+            validate={this.appNameIsValid}
+            className='project-url'
+            classInvalid='invalid' />
           <small> (<a href="{app.url}" target="_">site</a>)</small>
         </h3>
         <RIETextArea
           value={app.url}
           change={this.changedState}
           propName='url'
-          validate={this.isWellFormedURL}
+          validate={this.urlIsValid}
           className='project-url'
           classInvalid='invalid' />
         {this.props.editable &&
