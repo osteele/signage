@@ -8,7 +8,7 @@ import { FirebaseRef } from './firebase'
 
 const FirebaseAppsRef = FirebaseRef.child('apps')
 
-export default class AppInfoList extends Component {
+export default class AppList extends Component {
   firebaseSequenceRef = FirebaseAppsRef
 
   state = {
@@ -42,7 +42,7 @@ export default class AppInfoList extends Component {
     ) : <div className="alert alert-info">Loading…</div>
   }
 }
-reactMixin(AppInfoList.prototype, ReactFireMixin)
+reactMixin(AppList.prototype, ReactFireMixin)
 
 class AppInfo extends Component {
   changedState = (state) => {
@@ -75,7 +75,6 @@ class AppInfo extends Component {
     )
   }
 }
-
 
 class AddAppInfo extends Component {
   state = { name: "name", url: "url" }

@@ -3,7 +3,7 @@ import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { login, logout, onAuthStateChanged } from './auth'
 import { FirebaseRef } from './firebase'
-import AppInfoList from './AppInfo'
+import AppList from './AppList'
 import Playlist from './Playlist'
 import SignageScreen from './SignageScreen'
 import './App.css'
@@ -45,7 +45,7 @@ const Manager = ({ user }) =>
         </Col>
         <Col xs={6}>
           <h2>Applications</h2>
-          <AppInfoList />
+          <AppList />
         </Col>
       </Row>
     </Grid>
