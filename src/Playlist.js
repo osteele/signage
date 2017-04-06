@@ -86,7 +86,7 @@ class AddPlayListItem extends Component {
     const keys = Object.keys(this.props.apps).filter((k) => k[0] !== '.')
     return <form onSubmit={this.handleSubmit.bind(this)}>
       <label>
-        Add:
+        Application:
         <select defaultValue={this.props.apps[0]['.key']}
             onChange={(e) => this.setState({app: e.target.value})}>
           {keys.map((key) =>
@@ -95,7 +95,7 @@ class AddPlayListItem extends Component {
             </option>)}
         </select>
       </label>
-      <input type="submit" value="Create" />
+      <input type="submit" value="Add" />
     </form>
   }
 }

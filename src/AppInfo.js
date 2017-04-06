@@ -98,10 +98,10 @@ class AddAppInfo extends Component {
         >
         <ControlLabel>Add an application</ControlLabel>
         <FormControl type="text"
-          placeholder="Enter text"
+          placeholder="name"
           onChange={this.handleChange('name')} />
         <FormControl type="text"
-          placeholder="Enter URL"
+          placeholder="URL"
           onChange={this.handleChange('url')} />
         <FormControl.Feedback />
       </FormGroup>
