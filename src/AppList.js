@@ -66,16 +66,16 @@ class AppInfo extends Component {
         <h3>{app.name}
           <small> (<a href="{app.url}" target="_">site</a>)</small>
         </h3>
-        <code><RIETextArea
+        <RIETextArea
           value={app.url}
           change={this.changedState}
           propName='url'
           validate={this.isWellFormedURL}
           className='project-url'
-          classInvalid='invalid' /></code>
-          {this.props.editable &&
-            <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
-              onClick={this.props.remove} />}
+          classInvalid='invalid' />
+        {this.props.editable &&
+          <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
+            onClick={this.props.remove} />}
       </div>
     )
   }

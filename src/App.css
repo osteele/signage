@@ -24,6 +24,8 @@
 .project-url {
   width: 100%;
   word-wrap: break-word;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 80%;
 }
 
 .invalid { background: #fee; }
