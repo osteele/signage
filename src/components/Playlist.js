@@ -3,7 +3,7 @@ import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import { ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
-import { FirebaseRef } from './firebase'
+import { FirebaseRef } from '../firebase'
 
 export default class Playlist extends Component {
   firebaseSequenceRef = FirebaseRef.child('playlist/sequence')
