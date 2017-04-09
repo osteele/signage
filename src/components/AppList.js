@@ -19,8 +19,8 @@ class AppList extends Component {
   render = () => {
     const apps = this.props.apps
     const keys = this.props.appKeys.sort((k0, k1) => {
-        const v0 = apps[k0].name.toLowerCase(), v1 = apps[k1].name.toLowerCase()
-        return v0 < v1 ? -1 : v0 > v1 ? 1 : 0
+        const n0 = apps[k0].name, n1 = apps[k1].name
+        return n0.localeCompare(n1)
       })
     return apps ? (
       <ListGroup>
