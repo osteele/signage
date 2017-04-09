@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
-import { FirebaseRef } from '../api/firebase'
+import { firebaseRef } from '../api/firebase'
 
 export default class SignageScreen extends Component {
   state = {
@@ -17,9 +17,9 @@ export default class SignageScreen extends Component {
   endFrameTime = 0
 
   componentDidMount() {
-    this.bindAsObject(FirebaseRef.child('apps'), 'apps')
-    this.bindAsObject(FirebaseRef.child('playlist'), 'playlist')
-    this.bindAsArray(FirebaseRef.child('playlist/sequence'), 'sequence')
+    this.bindAsObject(firebaseRef.child('apps'), 'apps')
+    this.bindAsObject(firebaseRef.child('playlist'), 'playlist')
+    this.bindAsArray(firebaseRef.child('playlist/sequence'), 'sequence')
     this.setInterval(this.tick, 1000)
   }
 

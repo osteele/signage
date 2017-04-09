@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { login, logout, onAuthStateChanged } from '../api/auth'
-import { FirebaseRef } from '../api/firebase'
+import { firebaseRef } from '../api/firebase'
 import AppList from './AppList'
 import Playlist from './Playlist'
 import SignageScreen from './SignageScreen'
@@ -73,7 +73,7 @@ class App extends Component {
 
   componentDidMount() {
     onAuthStateChanged((user) => this.setState({ user }))
-    FirebaseRef.child('version').on('value', (snapshot) => {
+    firebaseRef.child('version').on('value', (snapshot) => {
       if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
         window.location.reload()
       }

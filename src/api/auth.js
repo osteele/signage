@@ -1,4 +1,4 @@
-import { Firebase, firebaseAuth, FirebaseRef } from './firebase'
+import { Firebase, firebaseAuth, firebaseRef } from './firebase'
 
 export const login = () => {
   const provider = new firebaseAuth.GithubAuthProvider()
@@ -6,7 +6,7 @@ export const login = () => {
   // TODO on mobile, sign in without redirect
   firebaseAuth().signInWithPopup(provider).then(function(result) {
     const user = result.user
-    FirebaseRef.child('users').child(user.uid).set({
+    firebaseRef.child('users').child(user.uid).set({
       email: user.email,
       signedInAt: Firebase.database.ServerValue.TIMESTAMP,
     })

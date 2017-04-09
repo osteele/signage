@@ -3,10 +3,10 @@ import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import { Button, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
-import { FirebaseRef } from '../api/firebase'
+import { firebaseRef } from '../api/firebase'
 
 export default class Playlist extends Component {
-  firebaseSequenceRef = FirebaseRef.child('playlist/sequence')
+  firebaseSequenceRef = firebaseRef.child('playlist/sequence')
 
   state = {
     apps: null,
@@ -14,7 +14,7 @@ export default class Playlist extends Component {
   }
 
   componentDidMount() {
-    this.bindAsObject(FirebaseRef.child('apps'), 'apps')
+    this.bindAsObject(firebaseRef.child('apps'), 'apps')
     this.bindAsArray(this.firebaseSequenceRef, 'sequence')
   }
 

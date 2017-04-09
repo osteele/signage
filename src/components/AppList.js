@@ -4,9 +4,9 @@ import reactMixin from 'react-mixin'
 import { Button, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ControlLabel, FormControl } from 'react-bootstrap'
 import { RIEInput, RIETextArea } from 'riek'
-import { FirebaseRef } from '../api/firebase'
+import { firebaseRef } from '../api/firebase'
 
-const FirebaseAppsRef = FirebaseRef.child('apps')
+const FirebaseAppsRef = firebaseRef.child('apps')
 
 export default class AppList extends Component {
   firebaseSequenceRef = FirebaseAppsRef
