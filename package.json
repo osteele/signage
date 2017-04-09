@@ -12,11 +12,11 @@
     "react-router-dom": "^4.0.0",
     "react-sortable-hoc": "^0.6.1",
     "react-timer-mixin": "^0.13.3",
-    "reactfire": "^1.0.0"
+    "reactfire": "^1.0.0",
+    "riek": "^1.0.7"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5",
-    "riek": "^1.0.7"
+    "react-scripts": "0.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
