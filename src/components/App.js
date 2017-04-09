@@ -36,9 +36,6 @@ let Manager = ({ signedIn }) =>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
-          <Link to="/preview">Wireframe</Link>
-          {' '}
-          <Link to="/view">Run</Link>
           <Playlist editable={signedIn} />
         </Col>
         <Col xs={6}>

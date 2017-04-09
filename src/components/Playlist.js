@@ -33,6 +33,9 @@ export default class Playlist extends Component {
   render = () =>
     Object.keys(this.state.apps || {}).length && this.state.sequence ? (
       <div>
+        <Link to="/preview">Wireframe</Link>
+        {' '}
+        <Link to="/view">Run</Link>
         <PlayListSequence
           apps={this.state.apps}
           items={this.state.sequence}
