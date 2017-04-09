@@ -25,22 +25,20 @@ let Manager = ({ signedIn }) =>
       </Grid>
     </Navbar>
 
-    <Grid>
-      <Jumbotron>
-        <p>
-          Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
-        </p>
-        <p>
-          Open <Link to="/view">{document.location.origin}/view</Link> on the screen
-          that is displaying the digital signage.
-        </p>
-      </Jumbotron>
-    </Grid>
+    {!signedIn &&
+      <Grid>
+        <Jumbotron>
+          <p><Button onClick={login}>Sign in</Button> to edit the playlist.</p>
+        </Jumbotron>
+      </Grid>}
 
     <Grid>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
+          <Link to="/preview">Wireframe</Link>
+          {' '}
+          <Link to="/view">Run</Link>
           <Playlist editable={signedIn} />
         </Col>
         <Col xs={6}>
