@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { login, logout, onAuthStateChanged } from '../api/auth'
+import { login, logout } from '../api/auth'
 import { firebaseRef } from '../api/firebase'
+import { Provider, withUser } from '../Provider'
 import AppList from './AppList'
 import Playlist from './Playlist'
 import SignageScreen from './SignageScreen'
@@ -10,7 +11,7 @@ import './App.css'
 
 const FIREBASE_SCHEMA_FORMAT = 1
 
-const Manager = ({ user }) =>
+let Manager = ({ signedIn }) =>
   <div>
     <Navbar>
       <Grid>
@@ -19,14 +20,13 @@ const Manager = ({ user }) =>
             <a href="/">Digital Signage Manager</a>
           </Navbar.Brand>
           <Navbar.Toggle />
-          <LoginButton signedIn={Boolean(user)} />
+          <LoginButton signedIn={signedIn} />
         </Navbar.Header>
       </Grid>
     </Navbar>
 
     <Grid>
       <Jumbotron>
-        {user ? null : <p>Sign in to edit the playlist.</p>}
         <p>
           Preview the sequence, with placeholders, at <Link to="/preview">{document.location.origin}/preview</Link>.
         </p>
@@ -41,7 +41,7 @@ const Manager = ({ user }) =>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
-          <Playlist editable={Boolean(user)} />
+          <Playlist editable={signedIn} />
         </Col>
         <Col xs={6}>
           <h2>Applications</h2>
@@ -62,17 +62,17 @@ const Manager = ({ user }) =>
       </div>
     </footer>
   </div>
+Manager = withUser(Manager)
 
-const LoginButton = ({ signedIn }) =>
+let LoginButton = ({ signedIn }) =>
   signedIn
     ? <Button onClick={logout}>Sign out</Button>
     : <Button onClick={login}>Sign in</Button>
 
-class App extends Component {
-  state = { user: null }
+LoginButton = withUser(LoginButton)
 
+class App extends Component {
   componentDidMount() {
-    onAuthStateChanged((user) => this.setState({ user }))
     firebaseRef.child('version').on('value', (snapshot) => {
       if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
         window.location.reload()
@@ -81,13 +81,15 @@ class App extends Component {
   }
 
   render = () =>
-    <Router>
-      <div>
-        <Route exact path="/" component={() => <Manager user={this.state.user} />} />
-        <Route exact path="/view" component={SignageScreen} />
-        <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
-      </div>
-    </Router>
+    <Provider>
+      <Router>
+        <div>
+          <Route exact path="/" component={Manager} />
+          <Route exact path="/view" component={SignageScreen} />
+          <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
+        </div>
+      </Router>
+    </Provider>
 }
 
 export default App
