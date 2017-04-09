@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { login, logout } from '../api/auth'
 import { firebaseRef } from '../api/firebase'
 import { Provider, withUser } from '../Provider'
+import { AppStoreProvider } from '../AppProvider'
 import AppList from './AppList'
 import PlaylistEditor from './PlaylistEditor'
 import SignageScreen from './SignageScreen'
@@ -25,25 +26,27 @@ let Manager = ({ signedIn }) =>
       </Grid>
     </Navbar>
 
-    {!signedIn &&
+    <AppStoreProvider>
       <Grid>
+
+      {!signedIn &&
         <Jumbotron>
           <p><Button onClick={login}>Sign in</Button> to edit the playlist.</p>
-        </Jumbotron>
-      </Grid>}
+        </Jumbotron>}
 
-    <Grid>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
           <PlaylistEditor editable={signedIn} />
         </Col>
+
         <Col xs={6}>
           <h2>Applications</h2>
           <AppList />
         </Col>
       </Row>
     </Grid>
+  </AppStoreProvider>
 
     <footer className="footer">
       <div className="container">

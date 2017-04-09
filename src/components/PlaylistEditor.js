@@ -5,17 +5,16 @@ import reactMixin from 'react-mixin'
 import { Button, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { firebaseRef } from '../api/firebase'
+import { withAppContext } from '../AppProvider'
 
-export default class PlaylistEditor extends Component {
+class PlaylistEditor extends Component {
   firebaseSequenceRef = firebaseRef.child('playlist/sequence')
 
   state = {
-    apps: null,
     sequence: null,
   }
 
   componentDidMount() {
-    this.bindAsObject(firebaseRef.child('apps'), 'apps')
     this.bindAsArray(this.firebaseSequenceRef, 'sequence')
   }
 
@@ -32,13 +31,13 @@ export default class PlaylistEditor extends Component {
   }
 
   render = () =>
-    Object.keys(this.state.apps || {}).length && this.state.sequence ? (
+    this.props.appsLoaded && this.state.sequence ? (
       <div>
         <Link to="/preview">Wireframe</Link>
         {' '}
         <Link to="/view">Run</Link>
         <PlayListSequence
-          apps={this.state.apps}
+          apps={this.props.apps}
           items={this.state.sequence}
           editable={this.props.editable}
           remove={this.removeItem.bind(this)}
@@ -46,12 +45,13 @@ export default class PlaylistEditor extends Component {
           useDragHandle={true} axis={'y'} />
         {this.props.editable &&
           <ListGroupItem>
-            <AddPlayListItem apps={this.state.apps} create={this.createItem} />
+            <AddPlayListItem apps={this.props.apps} create={this.createItem} />
           </ListGroupItem>}
       </div>
     ) : <div className="alert alert-info">Loading…</div>
 }
 reactMixin(PlaylistEditor.prototype, ReactFireMixin)
+export default withAppContext(PlaylistEditor)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 

@@ -1,32 +1,23 @@
 import React, { Component } from 'react'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import { Button, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ControlLabel, FormControl } from 'react-bootstrap'
 import { RIEInput, RIETextArea } from 'riek'
 import { firebaseRef } from '../api/firebase'
+import { withAppContext } from '../AppProvider'
 
-const FirebaseAppsRef = firebaseRef.child('apps')
+const firebaseAppsRef = firebaseRef.child('apps')
 
-export default class AppList extends Component {
-  firebaseSequenceRef = FirebaseAppsRef
-
-  state = {
-    apps: null
-  }
-
-  componentDidMount() {
-    this.bindAsObject(FirebaseAppsRef, 'apps')
-  }
+class AppList extends Component {
+  firebaseAppsRef = firebaseAppsRef
 
   createItem = (data) =>
-    this.firebaseSequenceRef.push({'.priority': Object.keys(this.state.apps).length, ...data})
+    this.firebaseSequenceRef.push({'.priority': Object.keys(this.props.apps).length, ...data})
 
   removeItemByKey = (key) =>
     this.firebaseSequenceRef.child(key).remove()
 
   render = () => {
-    const apps = this.state.apps
+    const apps = this.props.apps
     const keys = Object.keys(apps || {})
       .filter((key) => key[0] !== '.')
       .sort((k0, k1) => {
@@ -47,11 +38,12 @@ export default class AppList extends Component {
     ) : <div className="alert alert-info">Loading…</div>
   }
 }
-reactMixin(AppList.prototype, ReactFireMixin)
+// AppList = withApps(AppList)
+export default withAppContext(AppList)
 
 class AppInfo extends Component {
   changedState = (state) => {
-    const ref = FirebaseAppsRef.child(this.props.appKey)
+    const ref = firebaseAppsRef.child(this.props.appKey)
     for (let [k, v] of Object.entries(state)) {
       ref.child(k).set(v.trim())
     }
