@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { login, logout } from '../api/auth'
 import { firebaseRef } from '../api/firebase'
 import { Provider, withUser } from '../Provider'
 import AppList from './AppList'
-import Playlist from './Playlist'
+import PlaylistEditor from './PlaylistEditor'
 import SignageScreen from './SignageScreen'
 import './App.css'
 
@@ -36,7 +36,7 @@ let Manager = ({ signedIn }) =>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
-          <Playlist editable={signedIn} />
+          <PlaylistEditor editable={signedIn} />
         </Col>
         <Col xs={6}>
           <h2>Applications</h2>

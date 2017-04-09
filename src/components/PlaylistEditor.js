@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
 import { Button, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { firebaseRef } from '../api/firebase'
 
-export default class Playlist extends Component {
+export default class PlaylistEditor extends Component {
   firebaseSequenceRef = firebaseRef.child('playlist/sequence')
 
   state = {
@@ -50,7 +51,7 @@ export default class Playlist extends Component {
       </div>
     ) : <div className="alert alert-info">Loading…</div>
 }
-reactMixin(Playlist.prototype, ReactFireMixin)
+reactMixin(PlaylistEditor.prototype, ReactFireMixin)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 
