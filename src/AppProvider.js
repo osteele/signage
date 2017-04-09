@@ -9,13 +9,16 @@ export class AppStoreProvider extends Component {
 
   static childContextTypes = {
     apps: PropTypes.object,
+    appKeys: PropTypes.array,
     appsLoaded: PropTypes.bool.isRequired,
   }
 
   getChildContext() {
+    const { apps } = this.state
     return {
-      apps: this.state.apps,
-      appsLoaded: Object.keys(this.state.apps || {}).length > 0,
+      apps: apps,
+      appKeys: Object.keys(apps || {}).filter((key) => key[0] !== '.'),
+      appsLoaded: Object.keys(apps || {}).length > 0,
     }
   }
 
@@ -33,13 +36,15 @@ export const withAppContext = (ComponentToWrap) => {
   return class ExtendedComponent extends Component {
     static contextTypes = {
       apps: PropTypes.object,
+      appKeys: PropTypes.array,
       appsLoaded: PropTypes.bool.isRequired,
     }
 
     render() {
-      const { apps, appsLoaded } = this.context
+      const { apps, appKeys, appsLoaded } = this.context
       return (
-        <ComponentToWrap {...this.props} apps={apps} appsLoaded={appsLoaded} />
+        <ComponentToWrap {...this.props} apps={apps}
+          appKeys={appKeys} appsLoaded={appsLoaded} />
       )
     }
   }
