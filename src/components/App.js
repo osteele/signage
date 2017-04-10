@@ -22,8 +22,8 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Main} />
-          <Route exact path="/view" component={SignageScreen} />
-          <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
+          <Route exact path="/preview" component={() => <SignageScreen wireframe={true} />} />
+          <Route exact path="/display" component={SignageScreen} />
         </div>
       </Router>
     </AuthProvider>

@@ -47,7 +47,7 @@ export default class SignageScreen extends Component {
   renderApp = (frame, prefetch = false) => {
     const app = this.state.apps[frame.app]
     const style = prefetch ? { 'display': 'none' } : {}
-    return this.props.dummy ? (
+    return this.props.wireframe ? (
       <AppPagePlaceholder app={app} frame={frame} style={style} />
     ) : app ? (
       <iframe src={app.url} className="embedded-app" scrolling="no" frameBorder="0" style={style} />

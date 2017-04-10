@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import ReactFireMixin from 'reactfire'
 import reactMixin from 'react-mixin'
-import { Button, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
+import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { firebaseRef } from '../api/firebase'
 import { withAppContext } from '../providers'
@@ -35,9 +35,18 @@ class PlaylistEditor extends Component {
       return <div className="alert alert-info">Loading…</div>
     return (
       <div>
-        <Link to="/preview">Wireframe</Link>
-        {' '}
-        <Link to="/view">Run</Link>
+        <ButtonGroup>
+          <Button title="Run in wireframe mode">
+            <Link to="/preview">
+              <i className="fa fa-square-o" style={{cursor: 'pointer'}} />
+            </Link>
+          </Button>
+          <Button title="Run the playlist">
+            <Link to="/display">
+              <i className="fa fa-desktop" style={{cursor: 'pointer'}} />
+            </Link>
+          </Button>
+        </ButtonGroup>
         <PlayListSequence
           apps={this.props.apps}
           items={this.state.sequence}
