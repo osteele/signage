@@ -30,8 +30,10 @@ class PlaylistEditor extends Component {
     )
   }
 
-  render = () =>
-    this.props.appsLoaded && this.state.sequence ? (
+  render = () => {
+    if (!this.props.appsLoaded || !this.state.sequence)
+      return <div className="alert alert-info">Loading…</div>
+    return (
       <div>
         <Link to="/preview">Wireframe</Link>
         {' '}
@@ -48,7 +50,8 @@ class PlaylistEditor extends Component {
             <AddPlayListItem apps={this.props.apps} create={this.createItem} />
           </ListGroupItem>}
       </div>
-    ) : <div className="alert alert-info">Loading…</div>
+    )
+  }
 }
 reactMixin(PlaylistEditor.prototype, ReactFireMixin)
 export default withAppContext(PlaylistEditor)
@@ -86,7 +89,6 @@ class AddPlayListItem extends Component {
   }
 
   render() {
-    if (!this.props.apps) return null
     const keys = Object.keys(this.props.apps).filter((k) => k[0] !== '.')
     return <Form inline onSubmit={this.handleSubmit.bind(this)}>
       <ControlLabel>Application:&nbsp;</ControlLabel>

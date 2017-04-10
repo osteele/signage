@@ -17,12 +17,13 @@ class AppList extends Component {
     this.firebaseSequenceRef.child(key).remove()
 
   render = () => {
-    const apps = this.props.apps
-    const keys = this.props.appKeys.sort((k0, k1) => {
+    if (!this.props.appsLoaded) return <div className="alert alert-info">Loading…</div>
+    const { apps, appKeys } = this.props
+    const keys = appKeys.sort((k0, k1) => {
         const n0 = apps[k0].name, n1 = apps[k1].name
         return n0.localeCompare(n1)
       })
-    return apps ? (
+    return (
       <ListGroup>
         {keys.map((key) =>
           <ListGroupItem key={key}>
@@ -33,7 +34,7 @@ class AppList extends Component {
           <AddAppInfo create={this.createItem} />
         </ListGroupItem>
       </ListGroup>
-    ) : <div className="alert alert-info">Loading…</div>
+    )
   }
 }
 export default withAppContext(AppList)
