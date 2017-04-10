@@ -5,19 +5,9 @@ import { AppsProvider, withUser } from '../providers'
 import AppList from './AppList'
 import PlaylistEditor from './PlaylistEditor'
 
-let Manager = ({ signedIn }) =>
+const Manager = ({ signedIn }) =>
   <div>
-    <Navbar>
-      <Grid>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/">Digital Signage Manager</a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <LoginButton signedIn={signedIn} />
-        </Navbar.Header>
-      </Grid>
-    </Navbar>
+    <Header signedIn={signedIn} />
 
     <AppsProvider>
       <Grid>
@@ -41,6 +31,24 @@ let Manager = ({ signedIn }) =>
     </Grid>
   </AppsProvider>
 
+  <Footer />
+</div>
+export default withUser(Manager)
+
+const Header = ({ signedIn }) =>
+  <Navbar>
+    <Grid>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <a href="/">Digital Signage Manager</a>
+        </Navbar.Brand>
+        <Navbar.Toggle />
+        <LoginButton signedIn={signedIn} />
+      </Navbar.Header>
+    </Grid>
+  </Navbar>
+
+const Footer = () =>
   <footer className="footer">
     <div className="container">
       <p className="text-muted">
@@ -52,8 +60,6 @@ let Manager = ({ signedIn }) =>
       </p>
     </div>
   </footer>
-</div>
-export default  withUser(Manager)
 
 let LoginButton = ({ signedIn }) =>
   signedIn
