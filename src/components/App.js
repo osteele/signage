@@ -1,72 +1,12 @@
 import React, { Component } from 'react'
-import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { login, logout } from '../api/auth'
 import { firebaseRef } from '../api/firebase'
-import { AppsProvider, AuthProvider, withUser } from '../providers'
-import AppList from './AppList'
-import PlaylistEditor from './PlaylistEditor'
+import { AuthProvider } from '../providers'
 import SignageScreen from './SignageScreen'
+import Main from './Main'
 import './App.css'
 
 const FIREBASE_SCHEMA_FORMAT = 1
-
-let Manager = ({ signedIn }) =>
-  <div>
-    <Navbar>
-      <Grid>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/">Digital Signage Manager</a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <LoginButton signedIn={signedIn} />
-        </Navbar.Header>
-      </Grid>
-    </Navbar>
-
-    <AppsProvider>
-      <Grid>
-
-      {!signedIn &&
-        <Jumbotron>
-          <p><Button onClick={login}>Sign in</Button> to edit the playlist.</p>
-        </Jumbotron>}
-
-      <Row>
-        <Col xs={6}>
-          <h2>Playlist</h2>
-          <PlaylistEditor editable={signedIn} />
-        </Col>
-
-        <Col xs={6}>
-          <h2>Applications</h2>
-          <AppList />
-        </Col>
-      </Row>
-    </Grid>
-  </AppsProvider>
-
-    <footer className="footer">
-      <div className="container">
-        <p className="text-muted">
-          This application manages digital signage.
-        </p>
-        <p className="text-muted">
-          It manages a list of applications, and a playlist that sequences
-          those applications.
-        </p>
-      </div>
-    </footer>
-  </div>
-Manager = withUser(Manager)
-
-let LoginButton = ({ signedIn }) =>
-  signedIn
-    ? <Button onClick={logout}>Sign out</Button>
-    : <Button onClick={login}>Sign in</Button>
-
-LoginButton = withUser(LoginButton)
 
 class App extends Component {
   componentDidMount() {
@@ -81,7 +21,7 @@ class App extends Component {
     <AuthProvider>
       <Router>
         <div>
-          <Route exact path="/" component={Manager} />
+          <Route exact path="/" component={Main} />
           <Route exact path="/view" component={SignageScreen} />
           <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
         </div>
