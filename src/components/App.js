@@ -3,8 +3,7 @@ import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { login, logout } from '../api/auth'
 import { firebaseRef } from '../api/firebase'
-import { Provider, withUser } from '../Provider'
-import { AppStoreProvider } from '../AppProvider'
+import { AppsProvider, AuthProvider, withUser } from '../providers'
 import AppList from './AppList'
 import PlaylistEditor from './PlaylistEditor'
 import SignageScreen from './SignageScreen'
@@ -26,7 +25,7 @@ let Manager = ({ signedIn }) =>
       </Grid>
     </Navbar>
 
-    <AppStoreProvider>
+    <AppsProvider>
       <Grid>
 
       {!signedIn &&
@@ -46,7 +45,7 @@ let Manager = ({ signedIn }) =>
         </Col>
       </Row>
     </Grid>
-  </AppStoreProvider>
+  </AppsProvider>
 
     <footer className="footer">
       <div className="container">
@@ -79,7 +78,7 @@ class App extends Component {
   }
 
   render = () =>
-    <Provider>
+    <AuthProvider>
       <Router>
         <div>
           <Route exact path="/" component={Manager} />
@@ -87,7 +86,7 @@ class App extends Component {
           <Route exact path="/preview" component={() => <SignageScreen dummy={true} />} />
         </div>
       </Router>
-    </Provider>
+    </AuthProvider>
 }
 
 export default App

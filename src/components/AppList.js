@@ -3,7 +3,7 @@ import { Button, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { ControlLabel, FormControl } from 'react-bootstrap'
 import { RIEInput, RIETextArea } from 'riek'
 import { firebaseRef } from '../api/firebase'
-import { withAppContext } from '../AppProvider'
+import { withAppContext } from '../providers'
 
 const firebaseAppsRef = firebaseRef.child('apps')
 
@@ -36,7 +36,6 @@ class AppList extends Component {
     ) : <div className="alert alert-info">Loading…</div>
   }
 }
-// AppList = withApps(AppList)
 export default withAppContext(AppList)
 
 class AppInfo extends Component {

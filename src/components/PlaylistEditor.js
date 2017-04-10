@@ -5,7 +5,7 @@ import reactMixin from 'react-mixin'
 import { Button, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { firebaseRef } from '../api/firebase'
-import { withAppContext } from '../AppProvider'
+import { withAppContext } from '../providers'
 
 class PlaylistEditor extends Component {
   firebaseSequenceRef = firebaseRef.child('playlist/sequence')

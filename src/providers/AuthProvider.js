@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { onAuthStateChanged } from './api/auth'
+import { onAuthStateChanged } from '../api/auth'
 
-export class Provider extends Component {
+export class AuthProvider extends Component {
   state = { user: null }
 
   static childContextTypes = {
@@ -24,8 +24,8 @@ export class Provider extends Component {
   }
 }
 
-export const withUser = (ComponentToWrap) => {
-  return class SignedInComponent extends Component {
+export const withUser = (WrappedComponent) => {
+  return class extends Component {
     static contextTypes = {
       signedIn: PropTypes.bool.isRequired,
     }
@@ -33,7 +33,7 @@ export const withUser = (ComponentToWrap) => {
     render() {
       const { signedIn } = this.context
       return (
-        <ComponentToWrap {...this.props} signedIn={signedIn} />
+        <WrappedComponent {...this.props} signedIn={signedIn} />
       )
     }
   }
