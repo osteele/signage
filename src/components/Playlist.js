@@ -7,56 +7,60 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 import { firebaseRef } from '../api/firebase'
 import { withAppContext } from '../providers'
 
+const playlistItemsRef = firebaseRef.child('playlist/sequence')
+
+const addPlaylistItem = (playlist, data) =>
+  playlistItemsRef.push({'.priority': playlist.sequence.length, ...data})
+
+const removePlaylistItem = (playlist, item) =>
+  playlistItemsRef.child(item['.key']).remove()
+
+const movePlaylistItem = (playlist, oldIndex, newIndex) =>
+  arrayMove(playlist.sequence, oldIndex, newIndex).forEach((item, position) =>
+    playlistItemsRef.child(item['.key']).setPriority(position)
+  )
+
 class Playlist extends Component {
-  firebaseSequenceRef = firebaseRef.child('playlist/sequence')
+  sequenceRef = firebaseRef.child('playlist/sequence')
 
   state = {
     sequence: null,
   }
 
   componentDidMount() {
-    this.bindAsArray(this.firebaseSequenceRef, 'sequence')
-  }
-
-  createItem = (data) =>
-    this.firebaseSequenceRef.push({'.priority': this.state.sequence.length, ...data})
-
-  removeItem = (item) =>
-    this.firebaseSequenceRef.child(item['.key']).remove()
-
-  onSortEnd = ({ oldIndex, newIndex }) => {
-    arrayMove(this.state.sequence, oldIndex, newIndex).forEach((item, position) =>
-      this.firebaseSequenceRef.child(item['.key']).setPriority(position)
-    )
+    this.bindAsArray(this.sequenceRef, 'sequence')
   }
 
   render = () => {
     if (!this.props.appsLoaded || !this.state.sequence)
       return <div className="alert alert-info">Loading…</div>
+
     return (
       <div>
         <ButtonGroup>
           <Button title="Run in wireframe mode">
             <Link to="/preview">
-              <i className="fa fa-square-o" style={{cursor: 'pointer'}} />
+              <i className="fa fa-square-o" />
             </Link>
           </Button>
           <Button title="Run the playlist">
             <Link to="/display">
-              <i className="fa fa-desktop" style={{cursor: 'pointer'}} />
+              <i className="fa fa-desktop" />
             </Link>
           </Button>
         </ButtonGroup>
+
         <PlayListSequence
           apps={this.props.apps}
           items={this.state.sequence}
           editable={this.props.editable}
-          remove={this.removeItem.bind(this)}
-          onSortEnd={this.onSortEnd}
+          remove={removePlaylistItem.bind(null, this.state)}
+          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(this.state, oldIndex, newIndex)}
           useDragHandle={true} axis={'y'} />
+
         {this.props.editable &&
           <ListGroupItem>
-            <AddPlayListItem apps={this.props.apps} create={this.createItem} />
+            <AddPlayListItem apps={this.props.apps} create={addPlaylistItem.bind(null, this.state)} />
           </ListGroupItem>}
       </div>
     )
@@ -65,11 +69,11 @@ class Playlist extends Component {
 reactMixin(Playlist.prototype, ReactFireMixin)
 export default withAppContext(Playlist)
 
-const Handle = SortableHandle(() => <div className="handle" />)
+const DragHandle = SortableHandle(() => <div className="handle" />)
 
-let PlayListItem = ({ item, app, editable, remove }) =>
-  <ListGroupItem key={item['.key']}>
-    {editable && <Handle />}
+let PlayListItem = ({ item, key, app, editable, remove }) =>
+  <ListGroupItem key={key}>
+    {editable && <DragHandle />}
     <span>
       {app.name}
       {item.duration && <span> ({item.duration} seconds)</span>}
