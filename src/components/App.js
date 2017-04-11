@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { firebaseRef } from '../api/firebase'
 import { AuthProvider } from '../providers'
-import SignageScreen from './SignageScreen'
+import Signage from './Signage'
 import Main from './Main'
 import './App.css'
 
@@ -22,8 +22,8 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Main} />
-          <Route exact path="/preview" component={() => <SignageScreen wireframe={true} />} />
-          <Route exact path="/display" component={SignageScreen} />
+          <Route exact path="/preview" component={() => <Signage wireframe={true} />} />
+          <Route exact path="/display" component={Signage} />
         </div>
       </Router>
     </AuthProvider>

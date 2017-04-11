@@ -4,7 +4,7 @@ import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import { firebaseRef } from '../api/firebase'
 
-export default class SignageScreen extends Component {
+export default class Signage extends Component {
   state = {
     apps: [],
     playlist: {},
@@ -69,8 +69,8 @@ export default class SignageScreen extends Component {
     </div>
   }
 }
-reactMixin(SignageScreen.prototype, ReactFireMixin)
-reactMixin(SignageScreen.prototype, TimerMixin)
+reactMixin(Signage.prototype, ReactFireMixin)
+reactMixin(Signage.prototype, TimerMixin)
 
 // from http://stackoverflow.com/a/15710692/220667
 const hashCode = (str) =>

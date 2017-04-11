@@ -7,7 +7,7 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 import { firebaseRef } from '../api/firebase'
 import { withAppContext } from '../providers'
 
-class PlaylistEditor extends Component {
+class Playlist extends Component {
   firebaseSequenceRef = firebaseRef.child('playlist/sequence')
 
   state = {
@@ -62,8 +62,8 @@ class PlaylistEditor extends Component {
     )
   }
 }
-reactMixin(PlaylistEditor.prototype, ReactFireMixin)
-export default withAppContext(PlaylistEditor)
+reactMixin(Playlist.prototype, ReactFireMixin)
+export default withAppContext(Playlist)
 
 const Handle = SortableHandle(() => <div className="handle" />)
 

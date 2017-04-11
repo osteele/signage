@@ -3,7 +3,7 @@ import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
 import { login, logout } from '../api/auth'
 import { AppsProvider, withUser } from '../providers'
 import AppList from './AppList'
-import PlaylistEditor from './PlaylistEditor'
+import Playlist from './Playlist'
 
 const Manager = ({ signedIn }) =>
   <div>
@@ -20,7 +20,7 @@ const Manager = ({ signedIn }) =>
       <Row>
         <Col xs={6}>
           <h2>Playlist</h2>
-          <PlaylistEditor editable={signedIn} />
+          <Playlist editable={signedIn} />
         </Col>
 
         <Col xs={6}>
