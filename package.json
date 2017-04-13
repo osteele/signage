@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react": "^15.0.21",
+    "@types/react-dom": "^0.14.23",
+    "awesome-typescript-loader": "^3.1.2",
     "bootstrap": "3",
     "firebase": "^3.7.4",
     "prop-types": "^15.5.6",
@@ -14,7 +17,10 @@
     "react-sortable-hoc": "^0.6.1",
     "react-timer-mixin": "^0.13.3",
     "reactfire": "^1.0.0",
-    "riek": "^1.0.7"
+    "riek": "^1.0.7",
+    "source-map-loader": "^0.2.1",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",
