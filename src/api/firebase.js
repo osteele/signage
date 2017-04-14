@@ -11,11 +11,13 @@ Firebase.auth()
 export const firebaseRef = Firebase.database().ref()
 export const firebaseAuth = Firebase.auth
 
-export const connect = (propMap, WrappedComponent) =>
-  class extends Component {
+export function connect(propMap, WrappedComponent) {
+  var unmounters
+
+  return class extends Component {
     constructor(props) {
         super(props)
-        this.unmounters = _.map(propMap, (fbPath, propName) => {
+        unmounters = _.map(propMap, (fbPath, propName) => {
             const ref = firebaseRef.child(fbPath)
             const listener = (snapshot) => this.setState({[propName]:  snapshot.val()})
             ref.on('value', listener, console.error)
@@ -24,9 +26,34 @@ export const connect = (propMap, WrappedComponent) =>
     }
 
     componentWillUnmount() {
-        this.unmounters.forEach((fn) => fn())
+        unmounters.forEach((fn) => fn())
     }
 
     render = () =>
         <WrappedComponent {...this.props} {...this.state} />
+  }
+}
+
+const FIREBASE_SCHEMA_FORMAT = 1
+const firebaseVersionRef = firebaseRef.child('version')
+
+export function assertSchemaVersion(WrappedComponent) {
+  var listener
+
+  return class extends Component {
+    componentDidMount() {
+        listener = firebaseVersionRef.on('value', (snapshot) => {
+            if (snapshot.val() !== FIREBASE_SCHEMA_FORMAT) {
+                window.location.reload()
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        firebaseVersionRef.off('value', listener)
+    }
+
+    render = () =>
+        <WrappedComponent {...this.props} {...this.state} />
+    }
   }
