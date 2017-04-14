@@ -7,8 +7,9 @@ export const login = () => {
   firebaseAuth().signInWithPopup(provider).then(function(result) {
     const user = result.user
     firebaseRef.child('users').child(user.uid).set({
+      displayName: user.displayName,
       email: user.email,
-      signedInAt: Firebase.database.ServerValue.TIMESTAMP,
+      lastSignedInAt: Firebase.database.ServerValue.TIMESTAMP,
     })
   }).catch(function(error) {
     console.error('login error', error)
