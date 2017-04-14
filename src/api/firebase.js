@@ -11,6 +11,9 @@ Firebase.auth()
 export const firebaseRef = Firebase.database().ref()
 export const firebaseAuth = Firebase.auth
 
+const firebaseVersionRef = firebaseRef.child('version')
+const FIREBASE_SCHEMA_FORMAT = 2
+
 export function connect(propMap, WrappedComponent) {
   var unmounters
 
@@ -33,9 +36,6 @@ export function connect(propMap, WrappedComponent) {
         <WrappedComponent {...this.props} {...this.state} />
   }
 }
-
-const FIREBASE_SCHEMA_FORMAT = 1
-const firebaseVersionRef = firebaseRef.child('version')
 
 export function assertSchemaVersion(WrappedComponent) {
   var listener
