@@ -1,41 +1,40 @@
 import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import React, { Component } from 'react'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
-
 import { Link } from 'react-router-dom'
 import ReactFireMixin from 'reactfire'
-import { firebaseRef } from '../api/firebase'
 import reactMixin from 'react-mixin'
+
+import { firebaseRef } from '../api/firebase'
 import { withAppContext } from '../providers'
 
-const playlistItemsRef = firebaseRef.child('playlist/sequence')
+const playlistItemsRef = (id) =>
+  firebaseRef.child('playlists').child(id).child('sequence')
 
 const addPlaylistItem = (playlist, data) =>
-  playlistItemsRef.push({'.priority': playlist.sequence.length, ...data})
+  playlistItemsRef(playlist.id).push({'.priority': playlist.sequence.length, ...data})
 
 const removePlaylistItem = (playlist, item) =>
-  playlistItemsRef.child(item['.key']).remove()
+  playlistItemsRef(playlist.id).child(item['.key']).remove()
 
 const movePlaylistItem = (playlist, oldIndex, newIndex) =>
   arrayMove(playlist.sequence, oldIndex, newIndex).forEach((item, position) =>
-    playlistItemsRef.child(item['.key']).setPriority(position)
-  )
+    playlistItemsRef(playlist.id).child(item['.key']).setPriority(position))
 
 class Playlist extends Component {
-  sequenceRef = firebaseRef.child('playlist/sequence')
-
   state = {
     sequence: null,
   }
 
   componentDidMount() {
-    this.bindAsArray(this.sequenceRef, 'sequence')
+    this.bindAsArray(playlistItemsRef(this.props.id), 'sequence')
   }
 
   render = () => {
     if (!this.props.appsLoaded || !this.state.sequence)
       return <div className="alert alert-info">Loading…</div>
 
+    const id = this.props.id
     return (
       <div>
         <ButtonGroup>
@@ -55,13 +54,13 @@ class Playlist extends Component {
           apps={this.props.apps}
           items={this.state.sequence}
           editable={this.props.editable}
-          remove={removePlaylistItem.bind(null, this.state)}
-          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(this.state, oldIndex, newIndex)}
+          remove={removePlaylistItem.bind(null, id, this.state)}
+          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(id, this.state, oldIndex, newIndex)}
           useDragHandle={true} axis={'y'} />
 
         {this.props.editable &&
           <ListGroupItem>
-            <AddPlayListItem apps={this.props.apps} create={addPlaylistItem.bind(null, this.state)} />
+            <AddPlayListItem apps={this.props.apps} create={addPlaylistItem.bind(null, id, this.state)} />
           </ListGroupItem>}
       </div>
     )

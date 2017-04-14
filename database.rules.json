@@ -1,24 +1,24 @@
 {
-  "rules": {
-    ".read": "false",
-    ".write": "false",
-    "config": {
-      ".read": true
-    },
-    "version": { ".read": true },
-    "apps": {
-      ".read": "true",
-      ".write": "root.child('permissions').child(auth.uid).child('admin').val() == true"
-    },
-    "playlist": {
-      ".read": "true",
-      ".write": "root.child('permissions').child(auth.uid).child('admin').val() == true"
-    },
-    "users": {
-      "$user": {
-        ".read": "auth.uid === $user",
-        ".write": "auth.uid === $user"
-      }
+    "rules": {
+        ".read": "false",
+        ".write": "false",
+        "config": {
+            ".read": true
+        },
+        "version": { ".read": true },
+        "apps": {
+            ".read": "true",
+            ".write": "root.child('permissions').child(auth.uid).child('admin').val() == true"
+        },
+        "playlists": {
+            ".read": "true",
+            ".write": "root.child('permissions').child(auth.uid).child('admin').val() == true"
+        },
+        "users": {
+            "$user": {
+                ".read": "auth.uid === $user",
+                ".write": "auth.uid === $user"
+            }
+        }
     }
-  }
 }

@@ -1,12 +1,13 @@
-import { AppsProvider, withUser } from '../providers'
+import React from 'react'
 import { Button, Col, Grid, Jumbotron, Navbar, Row } from 'react-bootstrap'
-import { login, logout } from '../api/auth'
 
 import AppList from './AppList'
 import Playlist from './Playlist'
-import React from 'react'
+import { login, logout } from '../api/auth'
+import { connect } from '../api/firebase'
+import { AppsProvider, withUser } from '../providers'
 
-const Manager = ({ signedIn }) =>
+const Manager = ({ signedIn, playlists }) =>
   <div>
     <Header signedIn={signedIn} />
 
@@ -20,8 +21,9 @@ const Manager = ({ signedIn }) =>
 
       <Row>
         <Col xs={6}>
-          <h2>Playlist</h2>
-          <Playlist editable={signedIn} />
+          <h2>Playlists</h2>
+          {playlists && Object.keys(playlists).map((key) =>
+            <Playlist key={key} id={key} editable={signedIn} />)}
         </Col>
 
         <Col xs={6}>
@@ -34,7 +36,7 @@ const Manager = ({ signedIn }) =>
 
   <Footer />
 </div>
-export default withUser(Manager)
+export default withUser(connect({'playlists': 'playlists'}, Manager))
 
 const Header = ({ signedIn }) =>
   <Navbar>

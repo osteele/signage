@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-
 import PropTypes from 'prop-types'
 import ReactFireMixin from 'reactfire'
-import { firebaseRef } from '../api/firebase'
 import reactMixin from 'react-mixin'
+
+import { firebaseRef } from '../api/firebase'
 
 export class AppsProvider extends Component {
   state = { apps: null }
@@ -33,8 +33,8 @@ export class AppsProvider extends Component {
 }
 reactMixin(AppsProvider.prototype, ReactFireMixin)
 
-export const withAppContext = (WrappedComponent) => {
-  return class extends Component {
+export const withAppContext = (WrappedComponent) =>
+  class extends Component {
     static contextTypes = {
       apps: PropTypes.object,
       appKeys: PropTypes.array,
@@ -49,4 +49,3 @@ export const withAppContext = (WrappedComponent) => {
       )
     }
   }
-}
