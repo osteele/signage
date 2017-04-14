@@ -35,15 +35,16 @@ class AppList extends Component {
         {keys.map((key) =>
           <ListGroupItem key={key}>
             <AppItem app={apps[key]}
-              editable={true}
+              editable={this.props.editable}
               remove={this.removeItemByKey.bind(this, key)}
               update={this.setItemState.bind(this, key)}
              />
           </ListGroupItem>
         )}
-        <ListGroupItem>
-          <AddAppItem create={this.createItem} />
-        </ListGroupItem>
+        {this.props.editable &&
+            <ListGroupItem>
+            <AddAppItem create={this.createItem} />
+          </ListGroupItem>}
       </ListGroup>
     )
   }

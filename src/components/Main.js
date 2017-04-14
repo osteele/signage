@@ -28,7 +28,7 @@ const Manager = ({ signedIn, playlists }) =>
 
         <Col xs={6}>
           <h2>Applications</h2>
-          <AppList />
+          <AppList editable={signedIn} />
         </Col>
       </Row>
     </Grid>

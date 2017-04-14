@@ -1,10 +1,9 @@
-import { ControlLabel, FormControl } from 'react-bootstrap'
 import React, { Component } from 'react'
-
+import { ControlLabel, FormControl } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
 export default class AddAppItem extends Component {
-  state = { name: "name", url: "url" }
+  state = { name: "", url: "" }
 
   handleSubmit(event) {
     event.preventDefault()
@@ -12,8 +11,6 @@ export default class AddAppItem extends Component {
   }
 
   handleChange = (propName) => (e) => {
-    // const state = {}
-    // state[propName] = e.target.value
     const state = { [propName]: e.target.value }
     this.setState(state)
   }
