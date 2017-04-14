@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { firebaseRef } from '../api/firebase'
-import { AuthProvider } from '../providers'
-import Signage from './Signage'
-import Main from './Main'
 import './App.css'
+
+import React, { Component } from 'react'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
+
+import { AuthProvider } from '../providers'
+import Main from './Main'
+import Signage from './Signage'
+import { firebaseRef } from '../api/firebase'
 
 const FIREBASE_SCHEMA_FORMAT = 1
 

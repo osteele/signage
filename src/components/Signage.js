@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+
 import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import { firebaseRef } from '../api/firebase'
+import reactMixin from 'react-mixin'
 
 export default class Signage extends Component {
   state = {

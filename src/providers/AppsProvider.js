@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+
 import PropTypes from 'prop-types'
 import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 import { firebaseRef } from '../api/firebase'
+import reactMixin from 'react-mixin'
 
 export class AppsProvider extends Component {
   state = { apps: null }

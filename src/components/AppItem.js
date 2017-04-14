@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { RIEInput, RIETextArea } from 'riek'
+import React, { Component } from 'react'
 
 export default class AppItem extends Component {
   changedState = (state) => this.props.update(state)

@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
-import { firebaseRef } from '../api/firebase'
-import { withAppContext } from '../providers'
+import React, { Component } from 'react'
+
 import AddAppItem from './AddAppItem'
 import AppItem from './AppItem'
+import { firebaseRef } from '../api/firebase'
+import { withAppContext } from '../providers'
 
 const firebaseAppsRef = firebaseRef.child('apps')
 

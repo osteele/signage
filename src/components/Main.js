@@ -1,9 +1,10 @@
-import React from 'react'
-import { Grid, Navbar, Row, Jumbotron, Button, Col } from 'react-bootstrap'
-import { login, logout } from '../api/auth'
 import { AppsProvider, withUser } from '../providers'
+import { Button, Col, Grid, Jumbotron, Navbar, Row } from 'react-bootstrap'
+import { login, logout } from '../api/auth'
+
 import AppList from './AppList'
 import Playlist from './Playlist'
+import React from 'react'
 
 const Manager = ({ signedIn }) =>
   <div>

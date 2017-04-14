@@ -1,10 +1,11 @@
+import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import React, { Component } from 'react'
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
+
 import { Link } from 'react-router-dom'
 import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
-import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
-import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { firebaseRef } from '../api/firebase'
+import reactMixin from 'react-mixin'
 import { withAppContext } from '../providers'
 
 const playlistItemsRef = firebaseRef.child('playlist/sequence')
