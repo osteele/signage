@@ -24,17 +24,12 @@ export class AuthProvider extends Component {
   }
 }
 
-export const withUser = (WrappedComponent) => {
-  return class extends Component {
+export const withUser = (WrappedComponent) =>
+  class extends Component {
     static contextTypes = {
       signedIn: PropTypes.bool.isRequired,
     }
 
-    render() {
-      const { signedIn } = this.context
-      return (
-        <WrappedComponent {...this.props} signedIn={signedIn} />
-      )
-    }
+    render = () =>
+      <WrappedComponent {...this.props} signedIn={this.context.signedIn} />
   }
-}
