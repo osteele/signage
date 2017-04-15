@@ -13,8 +13,8 @@ Firebase.auth()
 export const firebaseRef = Firebase.database().ref()
 export const firebaseAuth = Firebase.auth
 
-const firebaseVersionRef = firebaseRef.child('version')
-const FIREBASE_SCHEMA_FORMAT = 2
+const firebaseVersionRef = firebaseRef.child('schemaVersion')
+const FIREBASE_SCHEMA_FORMAT = 3
 
 export function connect(propMap, WrappedComponent) {
   var unmounters
