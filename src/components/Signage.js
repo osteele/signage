@@ -18,9 +18,10 @@ export default class Signage extends Component {
   endFrameTime = 0
 
   componentDidMount() {
+    const { id } = this.props
     this.bindAsObject(firebaseRef.child('assets'), 'assets')
-    this.bindAsObject(firebaseRef.child('playlist'), 'playlist')
-    this.bindAsArray(firebaseRef.child('playlist/sequence'), 'sequence')
+    this.bindAsObject(firebaseRef.child(`playlists/${id}`), 'playlist')
+    this.bindAsArray(firebaseRef.child(`playlists/${id}/sequence`), 'sequence')
     this.setInterval(this.tick, 1000)
   }
 

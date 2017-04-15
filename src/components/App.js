@@ -15,8 +15,8 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Main} />
-          <Route exact path="/preview" component={() => <Signage wireframe={true} />} />
-          <Route exact path="/display" component={Signage} />
+          <Route exact path="/preview/:id" component={({match}) => <Signage id={match.params.id} wireframe={true} />} />
+          <Route exact path="/display/:id" component={({match}) => <Signage id={match.params.id} />} />
         </div>
       </Router>
     </AuthProvider>

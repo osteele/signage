@@ -38,12 +38,12 @@ class Playlist extends Component {
       <div>
         <ButtonGroup>
           <Button title="Run in wireframe mode">
-            <Link to="/preview">
+            <Link to={`/preview/${id}`}>
               <i className="fa fa-square-o" />
             </Link>
           </Button>
           <Button title="Run the playlist">
-            <Link to="/display">
+            <Link to={`/display/${id}`}>
               <i className="fa fa-desktop" />
             </Link>
           </Button>
