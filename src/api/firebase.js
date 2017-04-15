@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Firebase from 'firebase'
+import ReactFireMixin from 'reactfire'
+import reactMixin from 'react-mixin'
 import FirebaseConfig from '../config/firebase.json'
 import _ from 'lodash'
 
@@ -17,14 +19,24 @@ const FIREBASE_SCHEMA_FORMAT = 2
 export function connect(propMap, WrappedComponent) {
   var unmounters
 
-  return class extends Component {
-    constructor(props) {
-        super(props)
-        unmounters = _.map(propMap, (fbPath, propName) => {
-            const ref = firebaseRef.child(fbPath)
-            const listener = (snapshot) => this.setState({[propName]:  snapshot.val()})
-            ref.on('value', listener, console.error)
-            return () => ref.off('value', listener)
+  class BoundComponent extends Component {
+    componentDidMount() {
+        unmounters = _.map(propMap, (pathSpec, propName) => {
+            if (_.isFunction(pathSpec) || _.isString(pathSpec)) pathSpec = {path: pathSpec}
+
+            const path = _.isString(pathSpec.path) ? pathSpec.path : pathSpec.path(this.props)
+            const ref = firebaseRef.child(path)
+            if (pathSpec.type === Array) {
+                this.bindAsArray(ref, propName)
+                return () => null
+            } else {
+                // why not use bindAsObject here? (1) Because an earlier version that didn't handle
+                // the array case, was trying to wean from reactfire. (2) Because this code might
+                // still be going in a different direction.
+                const listener = (snapshot) => this.setState({[propName]:  snapshot.val()})
+                ref.on('value', listener, console.error)
+                return () => ref.off('value', listener)
+            }
         })
     }
 
@@ -35,6 +47,8 @@ export function connect(propMap, WrappedComponent) {
     render = () =>
         <WrappedComponent {...this.props} {...this.state} />
   }
+  reactMixin(BoundComponent.prototype, ReactFireMixin)
+  return BoundComponent
 }
 
 export function assertSchemaVersion(WrappedComponent) {

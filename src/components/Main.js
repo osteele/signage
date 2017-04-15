@@ -6,8 +6,9 @@ import Playlist from './Playlist'
 import { login, logout } from '../api/auth'
 import { connect } from '../api/firebase'
 import { AppsProvider, withUser } from '../providers'
+import _ from 'lodash'
 
-const Manager = ({ signedIn, playlists }) =>
+const Main = ({ signedIn, playlists }) =>
   <div>
     <Header signedIn={signedIn} />
 
@@ -22,8 +23,8 @@ const Manager = ({ signedIn, playlists }) =>
       <Row>
         <Col xs={6}>
           <h2>Playlists</h2>
-          {playlists && Object.keys(playlists).map((key) =>
-            <Playlist key={key} id={key} editable={signedIn} />)}
+          {playlists && _.map(playlists, (playlist, key) =>
+            <Playlist key={key} playlist={playlist} id={key} editable={signedIn} />)}
         </Col>
 
         <Col xs={6}>
@@ -36,7 +37,7 @@ const Manager = ({ signedIn, playlists }) =>
 
   <Footer />
 </div>
-export default withUser(connect({'playlists': 'playlists'}, Manager))
+export default withUser(connect({'playlists': 'playlists'}, Main))
 
 const Header = ({ signedIn }) =>
   <Navbar>

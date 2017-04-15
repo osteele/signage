@@ -2,39 +2,39 @@ import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } f
 import React, { Component } from 'react'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { Link } from 'react-router-dom'
-import ReactFireMixin from 'reactfire'
-import reactMixin from 'react-mixin'
 
 import { firebaseRef } from '../api/firebase'
 import { withAppContext } from '../providers'
+import { connect } from '../api/firebase'
 
 const playlistItemsRef = (id) =>
   firebaseRef.child('playlists').child(id).child('sequence')
 
-const addPlaylistItem = (playlist, data) =>
-  playlistItemsRef(playlist.id).push({'.priority': playlist.sequence.length, ...data})
+const appendPlaylistItem = (id, position, data) =>
+  playlistItemsRef(id).push({'.priority': position, ...data})
 
-const removePlaylistItem = (playlist, item) =>
-  playlistItemsRef(playlist.id).child(item['.key']).remove()
+const deletePlaylistItem = (playlist_id, item) => {
+  playlistItemsRef(playlist_id).child(item['.key']).remove()
+}
 
-const movePlaylistItem = (playlist, oldIndex, newIndex) =>
-  arrayMove(playlist.sequence, oldIndex, newIndex).forEach((item, position) =>
-    playlistItemsRef(playlist.id).child(item['.key']).setPriority(position))
+const movePlaylistItem = (id, sequence, oldIndex, newIndex) =>
+  arrayMove(sequence, oldIndex, newIndex).forEach((item, position) =>
+    playlistItemsRef(id).child(item['.key']).setPriority(position))
+
+// const JSONValue = ({value}) => <code>{JSON.stringify(value)}</code>
+
+// const ConsoleProps = (WrappedComponent) => (props) => {
+//   console.info(WrappedComponent, props)
+//   return <WrappedComponent {...props} />
+// }
 
 class Playlist extends Component {
-  state = {
-    sequence: null,
-  }
-
-  componentDidMount() {
-    this.bindAsArray(playlistItemsRef(this.props.id), 'sequence')
-  }
-
   render = () => {
-    if (!this.props.appsLoaded || !this.state.sequence)
+    if (!this.props.appsLoaded || !this.props.sequence)
       return <div className="alert alert-info">Loading…</div>
 
-    const id = this.props.id
+    const { apps, id, sequence } = this.props
+    // return <JSONValue value={sequence} />
     return (
       <div>
         <ButtonGroup>
@@ -51,23 +51,30 @@ class Playlist extends Component {
         </ButtonGroup>
 
         <PlayListSequence
-          apps={this.props.apps}
-          items={this.state.sequence}
+          apps={apps}
+          items={sequence}
           editable={this.props.editable}
-          remove={removePlaylistItem.bind(null, id, this.state)}
-          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(id, this.state, oldIndex, newIndex)}
-          useDragHandle={true} axis={'y'} />
+          remove={deletePlaylistItem.bind(null, id)}
+          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(id, sequence, oldIndex, newIndex)}
+          useDragHandle={true}
+          axis={'y'}
+          />
 
         {this.props.editable &&
           <ListGroupItem>
-            <AddPlayListItem apps={this.props.apps} create={addPlaylistItem.bind(null, id, this.state)} />
+            <AddPlayListItem apps={this.props.apps} create={appendPlaylistItem.bind(null, id, sequence.length)} />
           </ListGroupItem>}
       </div>
     )
   }
 }
-reactMixin(Playlist.prototype, ReactFireMixin)
-export default withAppContext(Playlist)
+const propMap = {
+  sequence: {
+    path: ({ id }) => `playlists/${id}/sequence`,
+    type: Array
+  }
+}
+export default withAppContext(connect(propMap, Playlist))
 
 const DragHandle = SortableHandle(() => <div className="handle" />)
 
