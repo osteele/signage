@@ -1,40 +1,40 @@
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import React, { Component } from 'react'
 
-import AddAppItem from './AddAppItem'
-import AppItem from './AppItem'
+import AddAsset from './AddAsset'
+import Asset from './Asset'
 import { firebaseRef } from '../api/firebase'
-import { withAppContext } from '../providers'
+import { withAssetContext } from '../providers'
 
-const firebaseAppsRef = firebaseRef.child('apps')
+const firebaseAssetsRef = firebaseRef.child('assets')
 
-class AppList extends Component {
+class AssetList extends Component {
   createItem = (data) =>
-    firebaseAppsRef.push({'.priority': this.props.appKeys.length, ...data})
+    firebaseAssetsRef.push({'.priority': this.props.assetKeys.length, ...data})
 
   removeItemByKey = (key) => {
-    firebaseAppsRef.child(key).remove()
+    firebaseAssetsRef.child(key).remove()
   }
 
   setItemState = (key, state) => {
-    const ref = firebaseAppsRef.child(key)
+    const ref = firebaseAssetsRef.child(key)
     for (let [k, v] of Object.entries(state)) {
       ref.child(k).set(v.trim())
     }
   }
 
   render = () => {
-    if (!this.props.appsLoaded) return <div className="alert alert-info">Loading…</div>
-    const { apps, appKeys } = this.props
-    const keys = appKeys.sort((k0, k1) => {
-        const n0 = apps[k0].name, n1 = apps[k1].name
+    if (!this.props.assetsLoaded) return <div className="alert alert-info">Loading…</div>
+    const { assets, assetKeys } = this.props
+    const keys = assetKeys.sort((k0, k1) => {
+        const n0 = assets[k0].name, n1 = assets[k1].name
         return n0.localeCompare(n1)
       })
     return (
       <ListGroup>
         {keys.map((key) =>
           <ListGroupItem key={key}>
-            <AppItem app={apps[key]}
+            <Asset asset={assets[key]}
               editable={this.props.editable}
               remove={this.removeItemByKey.bind(this, key)}
               update={this.setItemState.bind(this, key)}
@@ -43,10 +43,10 @@ class AppList extends Component {
         )}
         {this.props.editable &&
             <ListGroupItem>
-            <AddAppItem create={this.createItem} />
+            <AddAsset create={this.createItem} />
           </ListGroupItem>}
       </ListGroup>
     )
   }
 }
-export default withAppContext(AppList)
+export default withAssetContext(AssetList)

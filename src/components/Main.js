@@ -1,18 +1,18 @@
 import React from 'react'
 import { Button, Col, Grid, Jumbotron, Navbar, Row } from 'react-bootstrap'
 
-import AppList from './AppList'
+import AssetList from './AssetList'
 import Playlist from './Playlist'
 import { login, logout } from '../api/auth'
 import { connect } from '../api/firebase'
-import { AppsProvider, withUser } from '../providers'
+import { AssetsProvider, withUser } from '../providers'
 import _ from 'lodash'
 
 const Main = ({ signedIn, playlists }) =>
   <div>
     <Header signedIn={signedIn} />
 
-    <AppsProvider>
+    <AssetsProvider>
       <Grid>
 
       {!signedIn &&
@@ -28,12 +28,12 @@ const Main = ({ signedIn, playlists }) =>
         </Col>
 
         <Col xs={6}>
-          <h2>Applications</h2>
-          <AppList editable={signedIn} />
+          <h2>Assets</h2>
+          <AssetList editable={signedIn} />
         </Col>
       </Row>
     </Grid>
-  </AppsProvider>
+  </AssetsProvider>
 
   <Footer />
 </div>
@@ -59,8 +59,8 @@ const Footer = () =>
         This application manages digital signage.
       </p>
       <p className="text-muted">
-        It manages a list of applications, and a playlist that sequences
-        those applications.
+        It manages a list of assets, and a playlist that sequences
+        those assets.
       </p>
     </div>
   </footer>

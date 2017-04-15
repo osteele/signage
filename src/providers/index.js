@@ -1,2 +1,2 @@
-export * from './AppsProvider'
+export * from './AssetsProvider'
 export * from './AuthProvider'

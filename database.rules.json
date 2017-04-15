@@ -2,11 +2,12 @@
     "rules": {
         ".read": "false",
         ".write": "false",
+        "version": { ".read": true },
+        "schemaVersion": { ".read": true },
         "config": {
             ".read": true
         },
-        "version": { ".read": true },
-        "apps": {
+        "assets": {
             ".read": "true",
             ".write": "root.child('permissions').child(auth.uid).child('admin').val() == true"
         },

@@ -1,14 +1,14 @@
 import { RIEInput, RIETextArea } from 'riek'
 import React, { Component } from 'react'
 
-export default class AppItem extends Component {
+export default class Asset extends Component {
   changedState = (state) => this.props.update(state)
 
-  appNameIsValid = (name) => name.trim().match(/./)
+  nameIsValid = (name) => name.trim().match(/./)
   urlIsValid = (url) => url.match(/^https?:\/\/.+/)
 
   render() {
-    const app = this.props.app
+    const { name, url } = this.props.asset
     return (
       <div>
         {this.props.editable &&
@@ -16,16 +16,16 @@ export default class AppItem extends Component {
             onClick={this.props.remove} />}
         <h3>
           <RIEInput
-            value={app.name}
+            value={name}
             change={this.changedState}
             propName='name'
-            validate={this.appNameIsValid}
+            validate={this.nameIsValid}
             classInvalid='invalid' />
         </h3>
-        <a className="fa fa-external-link" href="{app.url}" target="_"></a>
+        <a className="fa fa-external-link" href="{url}" target="_" />
         {' '}
         <RIETextArea
-          value={app.url}
+          value={url}
           change={this.changedState}
           propName='url'
           validate={this.urlIsValid}

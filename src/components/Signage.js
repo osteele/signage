@@ -7,7 +7,7 @@ import reactMixin from 'react-mixin'
 
 export default class Signage extends Component {
   state = {
-    apps: [],
+    assets: [],
     playlist: {},
     sequence: [],
     currentFrame: null,
@@ -18,14 +18,14 @@ export default class Signage extends Component {
   endFrameTime = 0
 
   componentDidMount() {
-    this.bindAsObject(firebaseRef.child('apps'), 'apps')
+    this.bindAsObject(firebaseRef.child('assets'), 'assets')
     this.bindAsObject(firebaseRef.child('playlist'), 'playlist')
     this.bindAsArray(firebaseRef.child('playlist/sequence'), 'sequence')
     this.setInterval(this.tick, 1000)
   }
 
   tick = () => {
-    if (!Object.keys(this.state.apps).length || !this.state.sequence.length) return
+    if (!Object.keys(this.state.assets).length || !this.state.sequence.length) return
     if (new Date().getTime() >= this.endFrameTime) {
       this.advanceFrame()
     }
@@ -45,15 +45,15 @@ export default class Signage extends Component {
     this.setState({ currentFrame, nextFrame })
   }
 
-  renderApp = (frame, prefetch = false) => {
-    const app = this.state.apps[frame.app]
+  renderAsset = (frame, prefetch = false) => {
+    const asset = this.state.assets[frame.asset_id]
     const style = prefetch ? { 'display': 'none' } : {}
     return this.props.wireframe ? (
-      <AppPagePlaceholder app={app} frame={frame} style={style} />
-    ) : app ? (
-      <iframe src={app.url} className="embedded-app" scrolling="no" frameBorder="0" style={style} />
+      <AssetPlaceholder asset={asset} frame={frame} style={style} />
+    ) : asset ? (
+      <iframe src={asset.url} className="embedded-asset" scrolling="no" frameBorder="0" style={style} />
     ) : (
-      <div className="alert alert-danger">Missing app: {frame.app}</div>
+      <div className="alert alert-danger">Missing asset: {frame.asset}</div>
     )
   }
 
@@ -65,8 +65,8 @@ export default class Signage extends Component {
     }
 
     return <div>
-      {this.renderApp(currentFrame)}
-      {nextFrame && currentFrame !== nextFrame && this.renderApp(nextFrame, true)}
+      {this.renderAsset(currentFrame)}
+      {nextFrame && currentFrame !== nextFrame && this.renderAsset(nextFrame, true)}
     </div>
   }
 }
@@ -77,19 +77,19 @@ reactMixin(Signage.prototype, TimerMixin)
 const hashCode = (str) =>
   [].reduce.call(str, (p, c, i, a) => (p << 5) - p + a.charCodeAt(i), 0)
 
-function AppPagePlaceholder({ app, frame, style }) {
-  const h = hashCode(app.url)
+function AssetPlaceholder({ asset, frame, style }) {
+  const h = hashCode(asset.url)
   const r0 = (h >> 16) & 0xff, g0 = (h >> 8) & 0xff, b0 = h & 0xff
   const r = 0x80 + Math.floor(r0 / 2), g = 0x80 + Math.floor(g0 / 2), b = 0x80 + Math.floor(b0 / 2)
   const background = `rgb(${r}, ${g}, ${b})`
   const style1 = {...style, ...{background}}
   return (
-      <div className="embedded-app alert" style={style1}>
+      <div className="embedded-asset alert" style={style1}>
       <h1>
-        {app.name}
+        {asset.name}
         {frame.duration && <small> ({frame.duration} seconds)</small>}
       </h1>
-      <div><tt>{app.url}</tt></div>
+      <div><tt>{asset.url}</tt></div>
     </div>
   )
 }

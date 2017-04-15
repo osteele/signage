@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ControlLabel, FormControl } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
-export default class AddAppItem extends Component {
+export default class AddAsset extends Component {
   state = { name: "", url: "" }
 
   handleSubmit(event) {
@@ -17,7 +17,7 @@ export default class AddAppItem extends Component {
 
   render = () =>
     <form onSubmit={this.handleSubmit.bind(this)}>
-      <ControlLabel>Add an application</ControlLabel>
+      <ControlLabel>Add an asset</ControlLabel>
       <FormControl type="text"
         placeholder="name"
         onChange={this.handleChange('name')} />
