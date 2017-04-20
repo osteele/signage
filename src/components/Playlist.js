@@ -3,24 +3,16 @@ import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } f
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { Link } from 'react-router-dom'
 
-import { connect, firebaseRef } from '../api/firebase'
+import { connect } from '../api/firebase'
 import { withAssetContext } from '../providers'
-
-const playlistItemsRef = (id) =>
-  firebaseRef.child('playlists').child(id).child('sequence')
-
-const assetendPlaylistItem = (id, position, data) =>
-  playlistItemsRef(id).push({'.priority': position, ...data})
-
-const deletePlaylistItem = (playlist_id, item) => {
-  playlistItemsRef(playlist_id).child(item['.key']).remove()
-}
-
-const movePlaylistItem = (id, sequence, oldIndex, newIndex) =>
-  arrayMove(sequence, oldIndex, newIndex).forEach((item, position) =>
-    playlistItemsRef(id).child(item['.key']).setPriority(position))
+import { appendPlaylistItem, deletePlaylistItem, setPlaylistOrder } from '../actions'
 
 class Playlist extends Component {
+  onSortEnd = ({oldIndex, newIndex}) => {
+    const { id, sequence } = this.props
+    setPlaylistOrder(id, arrayMove(sequence, oldIndex, newIndex))
+  }
+
   render = () => {
     if (!this.props.assetsLoaded || !this.props.sequence)
       return <div className="alert alert-info">Loading…</div>
@@ -45,14 +37,14 @@ class Playlist extends Component {
           items={sequence}
           editable={this.props.editable}
           remove={deletePlaylistItem.bind(null, id)}
-          onSortEnd={({oldIndex, newIndex}) => movePlaylistItem(id, sequence, oldIndex, newIndex)}
+          onSortEnd={this.onSortEnd}
           useDragHandle={true}
           axis={'y'}
           />
 
         {this.props.editable &&
           <ListGroupItem>
-            <AddPlayListItem assets={this.props.assets} create={assetendPlaylistItem.bind(null, id, sequence.length)} />
+            <AddPlayListItem assets={this.props.assets} create={appendPlaylistItem.bind(null, id, sequence.length)} />
           </ListGroupItem>}
       </div>
     )
