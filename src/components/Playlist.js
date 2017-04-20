@@ -1,11 +1,10 @@
-import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import React, { Component } from 'react'
+import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { Link } from 'react-router-dom'
 
-import { firebaseRef } from '../api/firebase'
+import { connect, firebaseRef } from '../api/firebase'
 import { withAssetContext } from '../providers'
-import { connect } from '../api/firebase'
 
 const playlistItemsRef = (id) =>
   firebaseRef.child('playlists').child(id).child('sequence')
@@ -20,13 +19,6 @@ const deletePlaylistItem = (playlist_id, item) => {
 const movePlaylistItem = (id, sequence, oldIndex, newIndex) =>
   arrayMove(sequence, oldIndex, newIndex).forEach((item, position) =>
     playlistItemsRef(id).child(item['.key']).setPriority(position))
-
-// const JSONValue = ({value}) => <code>{JSON.stringify(value)}</code>
-
-// const ConsoleProps = (WrappedComponent) => (props) => {
-//   console.info(WrappedComponent, props)
-//   return <WrappedComponent {...props} />
-// }
 
 class Playlist extends Component {
   render = () => {
