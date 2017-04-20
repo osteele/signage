@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from '../api/firebase'
 import { withAssetContext } from '../providers'
-import { appendPlaylistItem, deletePlaylistItem, setPlaylistOrder } from '../actions'
+import { appendPlaylistItem, deletePlaylistItem, setPlaylistOrder } from '../actions/playlist_actions'
 
 class Playlist extends Component {
   onSortEnd = ({oldIndex, newIndex}) => {

@@ -1,4 +1,4 @@
-import { firebaseRef } from './api/firebase'
+import { firebaseRef } from '../api/firebase'
 
 const playlistItemsRef = (id) =>
   firebaseRef.child('playlists').child(id).child('sequence')
