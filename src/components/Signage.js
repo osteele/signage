@@ -36,6 +36,7 @@ export default class Signage extends Component {
     const { playlist, sequence } = this.state
     const playlistIndex = this.nextIndex
     this.nextIndex = (1 + playlistIndex) % sequence.length
+    
     const currentFrame = sequence[playlistIndex]
     const nextFrame = sequence[this.nextIndex]
     if (!currentFrame) return

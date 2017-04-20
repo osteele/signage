@@ -23,9 +23,9 @@ const movePlaylistItem = (id, sequence, oldIndex, newIndex) =>
 
 // const JSONValue = ({value}) => <code>{JSON.stringify(value)}</code>
 
-// const ConsoleProps = (WrassetedComponent) => (props) => {
-//   console.info(WrassetedComponent, props)
-//   return <WrassetedComponent {...props} />
+// const ConsoleProps = (WrappedComponent) => (props) => {
+//   console.info(WrappedComponent, props)
+//   return <WrappedComponent {...props} />
 // }
 
 class Playlist extends Component {
