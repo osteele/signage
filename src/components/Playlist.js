@@ -13,6 +13,20 @@ class Playlist extends Component {
     setPlaylistOrder(id, arrayMove(sequence, oldIndex, newIndex))
   }
 
+  PlaylistHeader = ({id}) =>
+    <ButtonGroup>
+      <Button title="Run in wireframe mode">
+        <Link to={`/preview/${id}`}>
+          <i className="fa fa-square-o" />
+        </Link>
+      </Button>
+      <Button title="Run the playlist">
+        <Link to={`/display/${id}`}>
+          <i className="fa fa-desktop" />
+        </Link>
+      </Button>
+    </ButtonGroup>
+
   render = () => {
     if (!this.props.assetsLoaded || !this.props.sequence)
       return <div className="alert alert-info">Loading…</div>
@@ -20,18 +34,7 @@ class Playlist extends Component {
     const { id, sequence } = this.props
     return (
       <div>
-        <ButtonGroup>
-          <Button title="Run in wireframe mode">
-            <Link to={`/preview/${id}`}>
-              <i className="fa fa-square-o" />
-            </Link>
-          </Button>
-          <Button title="Run the playlist">
-            <Link to={`/display/${id}`}>
-              <i className="fa fa-desktop" />
-            </Link>
-          </Button>
-        </ButtonGroup>
+        <this.PlaylistHeader id={id} />
 
         <PlayListSequence
           items={sequence}
