@@ -63,24 +63,30 @@ export default withAssetContext(connect(propMap, Playlist))
 
 const DragHandle = SortableHandle(() => <div className="handle" />)
 
-let PlayListItem = ({ item, key, assets, editable, remove }) =>
-  <ListGroupItem key={key}>
-    {editable && <DragHandle />}
-    <span>
-      {assets[item.asset_id].name}
-      {item.duration && <span> ({item.duration} seconds)</span>}
-      {' '}
-      {editable &&
-        <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
-          onClick={() => remove(item)} />}
-    </span>
-  </ListGroupItem>
-PlayListItem = SortableElement(withAssetContext(PlayListItem))
+const PlaylistItem = withAssetContext(({ item, key, assets, editable, remove }) =>
+  <span>
+    {assets[item.asset_id].name}
+    {item.duration && <span> ({item.duration} seconds)</span>}
+    {' '}
+    {editable &&
+      <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
+        onClick={() => remove(item)} />}
+  </span>
+)
+
+const sortableElement = (WrappedComponent) => SortableElement(
+  (props) =>
+    <ListGroupItem key={props.key}>
+      {props.editable && <DragHandle />}
+      <WrappedComponent {...props} />
+    </ListGroupItem>
+)
+const SortablePlaylistItem = sortableElement(PlaylistItem)
 
 let PlayListSequence = ({ items, editable, remove }) =>
   <div>
     {items.map((item, index) =>
-      <PlayListItem item={item} key={item['.key']} index={index}
+      <SortablePlaylistItem item={item} key={item['.key']} index={index}
         editable={editable} remove={remove} />)}
   </div>
 PlayListSequence = SortableContainer(PlayListSequence)
