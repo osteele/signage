@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
-import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
+import { SortableContainer, arrayMove } from 'react-sortable-hoc'
 import { Link } from 'react-router-dom'
 
+import { sortableElement } from './Utils'
 import { connect } from '../api/firebase'
 import { withAssetContext } from '../providers'
 import { appendPlaylistItem, deletePlaylistItem, setPlaylistOrder } from '../actions/playlist_actions'
@@ -61,25 +62,14 @@ const propMap = {
 }
 export default withAssetContext(connect(propMap, Playlist))
 
-const DragHandle = SortableHandle(() => <div className="handle" />)
-
 const PlaylistItem = withAssetContext(({ item, key, assets, editable, remove }) =>
   <span>
     {assets[item.asset_id].name}
     {item.duration && <span> ({item.duration} seconds)</span>}
-    {' '}
     {editable &&
       <i className="fa fa-trash-o pull-right" aria-hidden="true" style={{cursor: 'pointer'}}
         onClick={() => remove(item)} />}
   </span>
-)
-
-const sortableElement = (WrappedComponent) => SortableElement(
-  (props) =>
-    <ListGroupItem key={props.key}>
-      {props.editable && <DragHandle />}
-      <WrappedComponent {...props} />
-    </ListGroupItem>
 )
 const SortablePlaylistItem = sortableElement(PlaylistItem)
 
