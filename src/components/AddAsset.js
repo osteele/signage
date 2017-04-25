@@ -3,17 +3,15 @@ import { ControlLabel, FormControl } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
 export default class AddAsset extends Component {
-  state = { name: "", url: "" }
+  state = { name: '', url: '' }
 
   handleSubmit(event) {
     event.preventDefault()
     this.props.create(this.state)
   }
 
-  handleChange = (propName) => (e) => {
-    const state = { [propName]: e.target.value }
-    this.setState(state)
-  }
+  handleChange = (propName) => (e) =>
+    this.setState({ [propName]: e.target.value })
 
   render = () =>
     <form onSubmit={this.handleSubmit.bind(this)}>

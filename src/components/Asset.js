@@ -2,7 +2,7 @@ import { RIEInput, RIETextArea } from 'riek'
 import React, { Component } from 'react'
 
 export default class Asset extends Component {
-  changedState = (state) => this.props.update(state)
+  handleChange = (state) => this.props.update(state)
 
   nameIsValid = (name) => name.trim().match(/./)
 
@@ -18,19 +18,19 @@ export default class Asset extends Component {
       <h3>
         <RIEInput
           value={this.props.asset.name}
-          change={this.changedState}
-          propName='name'
+          change={this.handleChange}
+          propName="name"
           validate={this.nameIsValid}
-          classInvalid='invalid' />
+          classInvalid="invalid" />
       </h3>
       <a className="fa fa-external-link" href="{url}" target="_" />
       {' '}
       <RIETextArea
         value={this.props.asset.url}
-        change={this.changedState}
-        propName='url'
+        change={this.handleChange}
+        propName="url"
         validate={this.urlIsValid}
-        className='project-url'
-        classInvalid='invalid' />
+        className="project-url"
+        classInvalid="invalid" />
     </div>
 }
