@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react'
 import { Button, Col, Grid, Jumbotron, Navbar, Row } from 'react-bootstrap'
 

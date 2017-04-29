@@ -1,12 +1,14 @@
+// @flow
+
 import { RIEInput, RIETextArea } from 'riek'
 import React, { Component } from 'react'
 
 export default class Asset extends Component {
-  handleChange = (state) => this.props.update(state)
+  handleChange = (state: {}) => this.props.update(state)
 
-  nameIsValid = (name) => name.trim().match(/./)
+  nameIsValid = (name: string) => name.trim().match(/./)
 
-  urlIsValid = (url) => url.match(/^https?:\/\/.+/)
+  urlIsValid = (url: string) => url.match(/^https?:\/\/.+/)
 
   render = () =>
     <div>

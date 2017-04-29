@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react'
 import Firebase from 'firebase'
 import ReactFireMixin from 'reactfire'
@@ -6,6 +8,8 @@ import FirebaseConfig from '../config/firebase.json'
 import _ from 'lodash'
 
 export { Firebase }
+
+type PathSpecType = {| path: any |}
 
 Firebase.initializeApp(FirebaseConfig)
 Firebase.auth()
@@ -16,13 +20,16 @@ export const firebaseAuth = Firebase.auth
 const firebaseVersionRef = firebaseRef.child('schemaVersion')
 const FIREBASE_SCHEMA_FORMAT = 3
 
-export function connect(propMap, WrappedComponent) {
+export function connect(propMap: {}, WrappedComponent: any) {
   var unmounters
 
   class BoundComponent extends Component {
+    bindAsArray: (any, string) => any
+
     componentDidMount() {
-        unmounters = _.map(propMap, (pathSpec, propName) => {
-            if (_.isFunction(pathSpec) || _.isString(pathSpec)) pathSpec = {path: pathSpec}
+        unmounters = _.map(propMap, (pathSpec: PathSpecType, propName) => {
+            if (_.isFunction(pathSpec) || _.isString(pathSpec))
+              pathSpec = { path: pathSpec }
 
             const path = _.isString(pathSpec.path) ? pathSpec.path : pathSpec.path(this.props)
             const ref = firebaseRef.child(path)
@@ -51,7 +58,7 @@ export function connect(propMap, WrappedComponent) {
   return BoundComponent
 }
 
-export function assertSchemaVersion(WrappedComponent) {
+export function assertSchemaVersion(WrappedComponent: any): any {
   var listener
 
   return class extends Component {

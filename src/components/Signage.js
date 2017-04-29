@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react'
 
 import ReactFireMixin from 'reactfire'
@@ -5,9 +7,11 @@ import TimerMixin from 'react-timer-mixin'
 import { firebaseRef } from '../api/firebase'
 import reactMixin from 'react-mixin'
 
+type PlaylistFrameType = {| asset_id: string |}
+
 export default class Signage extends Component {
   state = {
-    assets: [],
+    assets: {},
     playlist: {},
     sequence: [],
     currentFrame: null,
@@ -16,6 +20,11 @@ export default class Signage extends Component {
 
   nextIndex = 0
   endFrameTime = 0
+
+  // added by mixins
+  bindAsArray: (any, string) => any
+  bindAsObject: (any, string) => any
+  setInterval: (() => any, number) => any
 
   componentDidMount() {
     const { id } = this.props
@@ -47,7 +56,7 @@ export default class Signage extends Component {
     this.setState({ currentFrame, nextFrame })
   }
 
-  renderAsset = (frame, prefetch = false) => {
+  renderAsset = (frame: PlaylistFrameType, prefetch: boolean = false) => {
     const asset = this.state.assets[frame.asset_id]
     const style = prefetch ? { 'display': 'none' } : {}
     return this.props.wireframe ? (
@@ -55,7 +64,7 @@ export default class Signage extends Component {
     ) : asset ? (
       <iframe src={asset.url} className="embedded-asset" scrolling="no" frameBorder="0" style={style} />
     ) : (
-      <div className="alert alert-danger">Missing asset: {frame.asset}</div>
+      <div className="alert alert-danger">Missing asset: {frame.asset_id}</div>
     )
   }
 

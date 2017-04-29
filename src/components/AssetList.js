@@ -1,3 +1,5 @@
+// @flow
+
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import React from 'react'
 

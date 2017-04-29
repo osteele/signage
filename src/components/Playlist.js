@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react'
 import { Button, ButtonGroup, ControlLabel, Form, FormControl, ListGroupItem } from 'react-bootstrap'
 import { SortableContainer, arrayMove } from 'react-sortable-hoc'
