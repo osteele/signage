@@ -15,10 +15,13 @@
     "react-sortable-hoc": "^0.6.1",
     "react-timer-mixin": "^0.13.3",
     "reactfire": "^1.0.0",
-    "riek": "^1.0.7"
+    "riek": "^1.0.7",
+    "yarn": "^0.22.0"
   },
   "devDependencies": {
     "firebase-tools": "^3.6.1",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.45.0",
     "react-scripts": "0.9.5"
   },
   "scripts": {
@@ -26,6 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "react-scripts build && firebase deploy",
+    "flow": "flow"
   }
 }
