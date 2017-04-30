@@ -7,7 +7,7 @@ import { ListGroupItem } from 'react-bootstrap'
 export const JSONValue = ({ value }: {value: mixed}) =>
   <code>{JSON.stringify(value)}</code>
 
-export const ConsoleProps = (WrappedComponent: any) =>
+export const ConsoleProps = (WrappedComponent: ReactClass<any>) =>
   (props: {}) => {
     console.info(WrappedComponent, props)
     return <WrappedComponent {...props} />
@@ -15,7 +15,7 @@ export const ConsoleProps = (WrappedComponent: any) =>
 
 const DragHandle = SortableHandle(() => <div className="handle" />)
 
-export const sortableElement = (WrappedComponent: any) => SortableElement(
+export const sortableElement = (WrappedComponent: ReactClass<any>) => SortableElement(
   (props) =>
     <ListGroupItem key={props.key}>
       {props.editable && <DragHandle />}

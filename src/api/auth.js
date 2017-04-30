@@ -2,6 +2,7 @@
 
 import { Firebase, firebaseAuth, firebaseRef } from './firebase'
 
+
 export const login = () => {
   const provider = new firebaseAuth.GithubAuthProvider()
   provider.addScope('user')
@@ -25,5 +26,5 @@ firebaseAuth().onAuthStateChanged((user) => {
   }
 })
 
-export const onAuthStateChanged = (cb: () => any) =>
-  firebaseAuth().onAuthStateChanged(cb)
+export const onAuthStateChanged = (onchange: () => void) =>
+  firebaseAuth().onAuthStateChanged(onchange)

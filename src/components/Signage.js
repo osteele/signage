@@ -10,6 +10,11 @@ import reactMixin from 'react-mixin'
 type PlaylistFrameType = {| asset_id: string |}
 
 export default class Signage extends Component {
+  // added by mixins
+  bindAsArray: (any, string) => void
+  bindAsObject: (any, string) => void
+  setInterval: (() => void, number) => void
+
   state = {
     assets: {},
     playlist: {},
@@ -20,11 +25,6 @@ export default class Signage extends Component {
 
   nextIndex = 0
   endFrameTime = 0
-
-  // added by mixins
-  bindAsArray: (any, string) => any
-  bindAsObject: (any, string) => any
-  setInterval: (() => any, number) => any
 
   componentDidMount() {
     const { id } = this.props

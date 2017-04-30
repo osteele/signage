@@ -20,11 +20,11 @@ export const firebaseAuth = Firebase.auth
 const firebaseVersionRef = firebaseRef.child('schemaVersion')
 const FIREBASE_SCHEMA_FORMAT = 3
 
-export function connect(propMap: {}, WrappedComponent: any) {
+export function connect(propMap: {}, WrappedComponent: ReactClass<any>) {
   var unmounters
 
   class BoundComponent extends Component {
-    bindAsArray: (any, string) => any
+    bindAsArray: (any, string) => void
 
     componentDidMount() {
         unmounters = _.map(propMap, (pathSpec: PathSpecType, propName) => {
@@ -58,7 +58,7 @@ export function connect(propMap: {}, WrappedComponent: any) {
   return BoundComponent
 }
 
-export function assertSchemaVersion(WrappedComponent: any): any {
+export function assertSchemaVersion(WrappedComponent: ReactClass<any>) {
   var listener
 
   return class extends Component {
