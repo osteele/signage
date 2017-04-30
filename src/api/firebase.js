@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react'
 import Firebase from 'firebase'
 import ReactFireMixin from 'reactfire'
@@ -9,7 +8,12 @@ import _ from 'lodash'
 
 export { Firebase }
 
-type PathSpecType = {| path: any |}
+type PathSpecType = {|
+  path: any,
+  type?: mixed,
+|} | string
+
+type PropMap = { [key: string]: PathSpecType }
 
 Firebase.initializeApp(FirebaseConfig)
 Firebase.auth()
@@ -20,22 +24,22 @@ export const firebaseAuth = Firebase.auth
 const firebaseVersionRef = firebaseRef.child('schemaVersion')
 const FIREBASE_SCHEMA_FORMAT = 3
 
-export function connect(propMap: {}, WrappedComponent: ReactClass<any>) {
-  var unmounters
+export function connect(propMap: PropMap, WrappedComponent: ReactClass<any>) {
+  var unmounters: Array<() => void>
 
   class BoundComponent extends Component {
     bindAsArray: (any, string) => void
 
     componentDidMount() {
-        unmounters = _.map(propMap, (pathSpec: PathSpecType, propName) => {
-            if (_.isFunction(pathSpec) || _.isString(pathSpec))
-              pathSpec = { path: pathSpec }
-
-            const path = _.isString(pathSpec.path) ? pathSpec.path : pathSpec.path(this.props)
+        unmounters = _.map(propMap, (spec_: PathSpecType, propName) => {
+            const spec = typeof spec_ === 'string' || typeof spec_ === 'function'
+              ? { path: spec_ }
+              : spec_
+            const path = typeof spec.path === 'string' ? spec.path : spec.path(this.props)
             const ref = firebaseRef.child(path)
-            if (pathSpec.type === Array) {
+            if (spec.type === Array) {
                 this.bindAsArray(ref, propName)
-                return () => null
+                return () => {}
             } else {
                 // why not use bindAsObject here? (1) Because an earlier version that didn't handle
                 // the array case, was trying to wean from reactfire. (2) Because this code might
