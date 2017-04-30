@@ -1,13 +1,14 @@
+// @flow
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { onAuthStateChanged } from '../api/auth'
 
 export class AuthProvider extends Component {
-  state = { user: null }
-
   static childContextTypes = {
     signedIn: PropTypes.bool.isRequired,
   }
+
+  state = { user: null }
 
   getChildContext() {
     return {
@@ -24,7 +25,7 @@ export class AuthProvider extends Component {
   }
 }
 
-export const withUser = (WrappedComponent) =>
+export const withUser = (WrappedComponent: ReactClass<any>) =>
   class extends Component {
     static contextTypes = {
       signedIn: PropTypes.bool.isRequired,

@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactFireMixin from 'reactfire'
@@ -6,13 +7,15 @@ import reactMixin from 'react-mixin'
 import { firebaseRef } from '../api/firebase'
 
 export class AssetsProvider extends Component {
-  state = { assets: null }
-
   static childContextTypes = {
     assets: PropTypes.object,
     assetKeys: PropTypes.array,
     assetsLoaded: PropTypes.bool.isRequired,
   }
+
+  bindAsObject: (any, string) => void
+
+  state = { assets: null }
 
   getChildContext() {
     const { assets } = this.state
@@ -33,7 +36,7 @@ export class AssetsProvider extends Component {
 }
 reactMixin(AssetsProvider.prototype, ReactFireMixin)
 
-export const withAssetContext = (WrappedComponent) =>
+export const withAssetContext = (WrappedComponent: ReactClass<any>) =>
   class extends Component {
     static contextTypes = {
       assets: PropTypes.object,
