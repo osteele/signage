@@ -1,10 +1,8 @@
 // @flow
-
 import { firebaseRef } from '../api/firebase'
 
 type ItemType = {'.key': string}
 type PlaylistId = string
-type ItemId = string
 
 const playlistItemsRef = (id: PlaylistId) =>
   firebaseRef.child('playlists').child(id).child('sequence')

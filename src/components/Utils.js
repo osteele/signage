@@ -1,6 +1,5 @@
 // @flow
-
-import React, { Component } from 'react'
+import React from 'react'
 import { SortableElement, SortableHandle } from 'react-sortable-hoc'
 import { ListGroupItem } from 'react-bootstrap'
 
